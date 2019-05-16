@@ -54,10 +54,11 @@ Any predictive modeling machine learning project genrally can be broken down int
 startTimeScript <- proc.time()
 library(caret)
 library(corrplot)
-library(mailR)
 library(DMwR)
-library(ROCR)
 library(Hmisc)
+library(mailR)
+library(ROCR)
+library(stringr)
 
 # Create one random seed number for reproducible results
 seedNum <- 888
