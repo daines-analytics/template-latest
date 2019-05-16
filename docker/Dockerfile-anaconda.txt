@@ -1,8 +1,9 @@
 FROM continuumio/anaconda3
 LABEL com.dainesanalytics.anaconda.version=v1.0
+EXPOSE 8080
 RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost
 RUN useradd -ms /bin/bash dev_user
 USER dev_user
 WORKDIR /home/dev_user
 COPY --chown=dev_user:dev_user examples/ /home/dev_user
-EXPOSE 8080
+CMD /opt/conda/bin/jupyter notebook --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/dev_user
