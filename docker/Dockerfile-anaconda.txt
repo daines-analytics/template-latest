@@ -5,5 +5,3 @@ RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost
 RUN useradd -ms /bin/bash dev_user
 USER dev_user
 WORKDIR /home/dev_user
-COPY --chown=dev_user:dev_user examples/ /home/dev_user
-CMD /opt/conda/bin/jupyter notebook --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/dev_user
