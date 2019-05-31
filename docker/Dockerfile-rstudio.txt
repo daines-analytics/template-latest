@@ -2,4 +2,3 @@ FROM rocker/verse
 LABEL com.dainesanalytics.rstudio.version=v1.0
 RUN Rscript -e "install.packages(c('knitr', 'tidyverse', 'caret', 'corrplot', 'mailR', 'DMwR', 'ROCR', 'Hmisc', 'randomForest', 'e1071', 'elasticnet', 'gbm', 'xgboost'))"
 COPY --chown=rstudio:rstudio .Renviron /home/rstudio
-COPY --chown=rstudio:rstudio examples/ /home/rstudio
