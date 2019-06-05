@@ -1,0 +1,47 @@
+##### Container prep commands #####
+
+scp conda_env.txt docker_admin@10.0.4.174:/home/docker_admin
+
+scp .Renviron docker_admin@10.0.4.173:/home/docker_admin
+
+ssh docker_admin@IP_ADDRESS
+
+ssh -T git@github.com
+
+git clone git@github.com:daines-analytics/template-latest.git
+
+git clone git@github.com:daines-analytics/under-development.git
+
+git clone git@github.com:daines-analytics/tabular-data-projects.git
+
+git clone git@github.com:daines-analytics/web-scraping-projects.git
+
+
+##### Anaconda container commands #####
+
+docker image build -t anaconda/nonroot:v1 .
+
+docker container run -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v1 /bin/bash
+
+/opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
+
+jupyter nbconvert --to html SCRIPT_NAME.ipynb
+
+docker cp mycontainer:/home/anaconda/under-development/py-classification-<path>/py-classification-<file>.ipynb ./
+
+scp docker_admin@10.0.4.174:/home/docker_admin/py-classification-<file>.ipynb ./
+
+
+##### RStudio container commands #####
+
+docker image build -t rstudio/nonroot:v1 .
+
+docker container run -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v1
+
+docker cp mycontainer:/home/rstudio/under-development/r-classification-<path>/r-classification-<file>.Rmd ./
+
+scp docker_admin@10.0.4.173:/home/docker_admin/r-classification-<file>.Rmd ./
+
+
+***** Mounted Storage Only *****
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 -v c:/Users/david.lowe/docker/anaconda:/home/anaconda/local --name jupyter-server anaconda/nonroot:v1 /bin/bash
