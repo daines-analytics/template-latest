@@ -5,6 +5,7 @@ RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost
 RUN useradd -ms /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh
 COPY id_rsa /home/anaconda/.ssh
+RUN chmod 744 /home/anaconda/.ssh/id_rsa
 USER anaconda
 RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
 WORKDIR /home/anaconda
