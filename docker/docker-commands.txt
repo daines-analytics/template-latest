@@ -25,6 +25,8 @@ docker container run -it --env-file conda_env.txt -p 8080:8080 --name jupyter-se
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
+/opt/conda/bin/jupyter notebook password
+
 jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
 docker cp mycontainer:/home/anaconda/under-development/py-classification-<path>/py-classification-<file>.ipynb ./
