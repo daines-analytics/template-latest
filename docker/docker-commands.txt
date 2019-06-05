@@ -21,11 +21,11 @@ git clone git@github.com:daines-analytics/web-scraping-projects.git
 
 docker image build -t anaconda/nonroot:v1 .
 
-docker container run -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v1 /bin/bash
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v1 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
-/opt/conda/bin/jupyter notebook password
+/opt/conda/bin/jupyter notebook password (run server at least once first)
 
 jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
@@ -38,7 +38,7 @@ scp docker_admin@10.0.4.174:/home/docker_admin/py-classification-<file>.ipynb ./
 
 docker image build -t rstudio/nonroot:v1 .
 
-docker container run -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v1
+docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v1
 
 docker cp mycontainer:/home/rstudio/under-development/r-classification-<path>/r-classification-<file>.Rmd ./
 
