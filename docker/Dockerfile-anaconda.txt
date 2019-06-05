@@ -1,7 +1,10 @@
-FROM continuumio/anaconda3
+FROM continuumio/anaconda3:latest
 LABEL com.dainesanalytics.anaconda.version=v1.0
 EXPOSE 8080
 RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost
-RUN useradd -ms /bin/bash dev_user
-USER dev_user
-WORKDIR /home/dev_user
+RUN useradd -ms /bin/bash anaconda
+RUN mkdir /home/anaconda/.ssh
+COPY id_rsa /home/anaconda/.ssh
+USER anaconda
+RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+WORKDIR /home/anaconda
