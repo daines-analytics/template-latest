@@ -1,10 +1,11 @@
 FROM continuumio/anaconda3:latest
 LABEL com.dainesanalytics.anaconda.version=v1.0
 EXPOSE 8080
-RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost
+RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost mymysql
 RUN useradd -ms /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
 COPY --chown=anaconda:anaconda id_rsa /home/anaconda/.ssh
+RUN chmod 700 /home/anaconda/.ssh/id_rsa
 USER anaconda
 RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
 WORKDIR /home/anaconda
