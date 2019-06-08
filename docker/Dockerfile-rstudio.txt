@@ -7,3 +7,4 @@ RUN chmod 700 /home/rstudio/.ssh/id_rsa
 COPY --chown=rstudio:rstudio .Renviron /home/rstudio
 USER rstudio
 RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+USER root
