@@ -621,5 +621,8 @@ proc.time()-startTimeModule
 
 ```{r}
 if (!muteEmail) email_notify(paste("Model Validation and Final Model Creation Completed!",date()))
+```
+
+```{r}
 proc.time()-startTimeScript
 ```
