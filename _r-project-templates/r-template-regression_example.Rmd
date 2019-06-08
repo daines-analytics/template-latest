@@ -1,7 +1,7 @@
 ---
 title: "Regression Model for [Project Name] Using R version 10"
 author: "David Lowe"
-date: "June 3, 2019"
+date: "June 17, 2019"
 output: 
   html_document: 
     toc: yes
@@ -16,11 +16,11 @@ Template Credit: Adapted from a template made available by Dr. Jason Brownlee of
 
 SUMMARY: [The purpose of this project is to construct a prediction model using various machine learning algorithms and to document the end-to-end steps using a template. The [Dataset Name] is a regression situation where we are trying to predict a real-number value for a given set of criteria.]
 
-INTRODUCTION: [Sample Paragraph - The dataset for this project originates from the UCI Machine Learning Repository. The Boston housing data was collected in 1978 and each of the 506 entries represent aggregated data about 14 features for homes from various suburbs in Boston, Massachusetts.]
+INTRODUCTION: [Sample Paragraph - The dataset for this project originates from the UCI Machine Learning Repository. The Boston housing data was collected in 1978 and each of the 506 entries represents aggregated data about 14 features for homes from various suburbs in Boston, Massachusetts.]
 
-ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average RMSE of 4.561. Two algorithms (Random Forest and Gradient Boosting) achieved the top RMSE metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an RMSE metric of 3.105. By using the optimized parameters, the Random Forest algorithm processed the testing dataset with a RMSE of 3.480, which was slightly above the prediction RMSE gained from the training data.]
+ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average RMSE of 4.561. Two algorithms (Random Forest and Gradient Boosting) achieved the top RMSE metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an RMSE metric of 3.105. After applying the optimized parameters, the Random Forest algorithm processed the testing dataset with an RMSE of 3.480, which was slightly above the prediction RMSE gained from the training data.]
 
-CONCLUSION: [Sample Paragraph - For this iteration, the Random Forest algorithm achieved the best overall training and validation results. For this dataset, the Random Forest algorithm could be considered for further modeling or production use.]
+CONCLUSION: [Sample Paragraph - For this iteration, the Random Forest algorithm achieved the best overall training and validation results. For this dataset, the Random Forest algorithm could be considered for further modeling.]
 
 Dataset Used: [Dataset Name - Boston Housing]
 
@@ -87,7 +87,12 @@ email_notify <- function(msg=""){
 ```
 
 ```{r}
-email_notify(paste("Library and Data Loading has begun!",date()))
+# Set up the muteEmail flag to stop sending progress emails (setting FALSE will send emails!)
+muteEmail <- FALSE
+```
+
+```{r}
+if (!muteEmail) email_notify(paste("Library and Data Loading has begun!",date()))
 ```
 
 ### 1.c) Load dataset
@@ -138,12 +143,21 @@ sapply(xy_original, function(x) sum(is.na(x)))
 # Not applicable for this iteration of the project.
 # Sample code for performing basic data cleaning tasks
 
+# Dropping features
+# xy_original$column_name <- NULL
+
 # Mark missing values
-#invalid <- 0
-#entireDataset$some_col[entireDataset$some_col==invalid] <- NA
+# invalid <- 0
+# xy_original$column_name[xy_original$column_name==invalid] <- NA
 
 # Impute missing values
-#entireDataset$some_col <- with(entireDataset, impute(some_col, mean))
+# column_median <- median(xy_original$column_name, na.rm = TRUE)
+# xy_original$column_name[xy_original$column_name==0] <- column_median
+# xy_original$column_name <- with(xy_original, impute(column_name, cholumn_median))
+
+# Convert columns from one data type to another
+# xy_original$column_name <- as.integer(xy_original$column_name)
+# xy_original$column_name <- as.factor(xy_original$column_name)
 ```
 
 ```{r}
@@ -221,14 +235,14 @@ metricTarget <- "RMSE"
 ```
 
 ```{r}
-email_notify(paste("Library and Data Loading completed!",date()))
+if (!muteEmail) email_notify(paste("Library and Data Loading completed!",date()))
 ```
 
 ## 2. Summarize Data
 To gain a better understanding of the data that we have on-hand, we will leverage a number of descriptive statistics and data visualization techniques. The plan is to use the results to consider new questions, review assumptions, and validate hypotheses that we can investigate later with specialized models.
 
 ```{r}
-email_notify(paste("Data Summarization and Visualization has begun!",date()))
+if (!muteEmail) email_notify(paste("Data Summarization and Visualization has begun!",date()))
 ```
 
 ### 2.a) Descriptive statistics
@@ -296,7 +310,7 @@ corrplot(correlations, method="circle")
 ```
 
 ```{r}
-email_notify(paste("Data Summarization and Visualization completed!",date()))
+if (!muteEmail) email_notify(paste("Data Summarization and Visualization completed!",date()))
 ```
 
 ## 3. Prepare Data
@@ -307,7 +321,7 @@ Some dataset may require additional preparation activities that will best expose
 * Data transforms where attributes are scaled or redistributed in order to best expose the structure of the problem later to learning algorithms.
 
 ```{r}
-email_notify(paste("Data Cleaning and Transformation has begun!",date()))
+if (!muteEmail) email_notify(paste("Data Cleaning and Transformation has begun!",date()))
 ```
 
 ### 3.a) Feature Selection
@@ -403,7 +417,7 @@ sapply(xy_train, class)
 ```
 
 ```{r}
-email_notify(paste("Data Cleaning and Transformation completed!",date()))
+if (!muteEmail) email_notify(paste("Data Cleaning and Transformation completed!",date()))
 proc.time()-startTimeScript
 ```
 
@@ -428,59 +442,59 @@ The random number seed is reset before each run to ensure that the evaluation of
 
 ```{r LR}
 # Linear Regression (Regression)
-email_notify(paste("Linear Regression modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Linear Regression modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.lm <- train(targetVar~., data=xy_train, method="lm", metric=metricTarget, trControl=control)
 print(fit.lm)
 proc.time()-startTimeModule
-email_notify(paste("Linear Regression modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Linear Regression modeling completed!",date()))
 ```
 
 ```{r RIDGE}
 # Ridge (Regression)
-email_notify(paste("Ridge Regression modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Ridge Regression modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.ridge <- train(targetVar~., data=xy_train, method="ridge", metric=metricTarget, trControl=control)
 print(fit.ridge)
 proc.time()-startTimeModule
-email_notify(paste("Ridge Regression modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Ridge Regression modeling completed!",date()))
 ```
 
 ```{r LASSO}
 # The Lasso (Regression)
-email_notify(paste("The Lasso modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("The Lasso modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.lasso <- train(targetVar~., data=xy_train, method="lasso", metric=metricTarget, trControl=control)
 print(fit.lasso)
 proc.time()-startTimeModule
-email_notify(paste("The Lasso modeling completed!",date()))
+if (!muteEmail) email_notify(paste("The Lasso modeling completed!",date()))
 ```
 
 ```{r ENET}
 # Elasticnet (Regression)
-email_notify(paste("Elasticnet modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Elasticnet modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.enet <- train(targetVar~., data=xy_train, method="enet", metric=metricTarget, trControl=control)
 print(fit.enet)
 proc.time()-startTimeModule
-email_notify(paste("Elasticnet modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Elasticnet modeling completed!",date()))
 ```
 
 ### 4.b) Generate models using nonlinear algorithms
 
 ```{r CART}
 # Decision Tree - CART (Regression/Classification)
-email_notify(paste("Decision Tree modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Decision Tree modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.cart <- train(targetVar~., data=xy_train, method="rpart", metric=metricTarget, trControl=control)
 print(fit.cart)
 proc.time()-startTimeModule
-email_notify(paste("Decision Tree modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Decision Tree modeling completed!",date()))
 ```
 
 ### 4.c) Generate models using ensemble algorithms
@@ -488,36 +502,36 @@ In this section, we will explore the use and tuning of ensemble algorithms to se
 
 ```{r BAGCART}
 # Bagged CART (Regression/Classification)
-email_notify(paste("Bagged CART modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Bagged CART modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.bagcart <- train(targetVar~., data=xy_train, method="treebag", metric=metricTarget, trControl=control)
 print(fit.bagcart)
 proc.time()-startTimeModule
-email_notify(paste("Bagged CART modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Bagged CART modeling completed!",date()))
 ```
 
 ```{r RF}
 # Random Forest (Regression/Classification)
-email_notify(paste("Random Forest modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Random Forest modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.rf <- train(targetVar~., data=xy_train, method="rf", metric=metricTarget, trControl=control)
 print(fit.rf)
 proc.time()-startTimeModule
-email_notify(paste("Random Forest modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Random Forest modeling completed!",date()))
 ```
 
 ```{r GBM}
 # Gradient Boosting (Regression/Classification)
-email_notify(paste("Gradient Boosting modeling has begun!",date()))
+if (!muteEmail) email_notify(paste("Gradient Boosting modeling has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 fit.gbm <- train(targetVar~., data=xy_train, method="xgbTree", metric=metricTarget, trControl=control, verbose=F)
 # fit.gbm <- train(targetVar~., data=xy_train, method="gbm", metric=metricTarget, trControl=control, verbose=F)
 print(fit.gbm)
 proc.time()-startTimeModule
-email_notify(paste("Gradient Boosting modeling completed!",date()))
+if (!muteEmail) email_notify(paste("Gradient Boosting modeling completed!",date()))
 ```
 
 ### 4.d) Compare baseline algorithms
@@ -540,7 +554,7 @@ Finally, we will tune the best-performing algorithms from each group further and
 
 ```{r FINAL1}
 # Tuning algorithm #1 - Random Forest
-email_notify(paste("Algorithm #1 tuning has begun!",date()))
+if (!muteEmail) email_notify(paste("Algorithm #1 tuning has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 grid <- expand.grid(mtry = c(4,7,10,13))
@@ -548,12 +562,12 @@ fit.final1 <- train(targetVar~., data=xy_train, method="rf", metric=metricTarget
 plot(fit.final1)
 print(fit.final1)
 proc.time()-startTimeModule
-email_notify(paste("Algorithm #1 tuning completed!",date()))
+if (!muteEmail) email_notify(paste("Algorithm #1 tuning completed!",date()))
 ```
 
 ```{r FINAL2}
 # Tuning algorithm #2 - Gradient Boosting
-email_notify(paste("Algorithm #2 tuning has begun!",date()))
+if (!muteEmail) email_notify(paste("Algorithm #2 tuning has begun!",date()))
 startTimeModule <- proc.time()
 set.seed(seedNum)
 grid <- expand.grid(nrounds=c(50,100,200,300), max_depth=3, eta=0.3, gamma=0, colsample_bytree=0.8, min_child_weight=1, subsample=0.75)
@@ -561,7 +575,7 @@ fit.final2 <- train(targetVar~., data=xy_train, method="xgbTree", metric=metricT
 plot(fit.final2)
 print(fit.final2)
 proc.time()-startTimeModule
-email_notify(paste("Algorithm #2 tuning completed!",date()))
+if (!muteEmail) email_notify(paste("Algorithm #2 tuning completed!",date()))
 ```
 
 ### 5.d) Compare Algorithms After Tuning
@@ -580,7 +594,7 @@ Once we have narrow down to a model that we believe can make accurate prediction
 * Saving an optimal model to file for later use.
 
 ```{r}
-email_notify(paste("Model Validation and Final Model Creation has begun!",date()))
+if (!muteEmail) email_notify(paste("Model Validation and Final Model Creation has begun!",date()))
 ```
 
 ### 6.a) Predictions on validation dataset
@@ -613,6 +627,6 @@ proc.time()-startTimeModule
 ```
 
 ```{r}
-email_notify(paste("Model Validation and Final Model Creation Completed!",date()))
+if (!muteEmail) email_notify(paste("Model Validation and Final Model Creation Completed!",date()))
 proc.time()-startTimeScript
 ```
