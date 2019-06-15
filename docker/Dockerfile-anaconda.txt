@@ -1,5 +1,5 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.anaconda.version=v1.0
+LABEL com.dainesanalytics.anaconda.version=v2.0
 EXPOSE 8080
 RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost mymysql
 RUN useradd -ms /bin/bash anaconda
