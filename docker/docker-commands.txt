@@ -46,4 +46,4 @@ scp docker_admin@10.0.4.173:/home/docker_admin/r-classification-<file>.Rmd ./
 
 
 ***** Mounted Storage Only *****
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 -v c:/Users/david.lowe/docker/anaconda:/home/anaconda/local --name jupyter-server anaconda/nonroot:v1 /bin/bash
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 -v c:/Users/david.lowe/docker/anaconda:/home/anaconda/local --name jupyter-server anaconda/nonroot:v2 /bin/bash
