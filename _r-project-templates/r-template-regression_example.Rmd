@@ -1,7 +1,7 @@
 ---
-title: "Regression Model for [Project Name] Using R version 10"
+title: "Regression Model for [Project Name] Using R version 11"
 author: "David Lowe"
-date: "June 17, 2019"
+date: "August 7, 2019"
 output: 
   html_document: 
     toc: yes
@@ -14,11 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [http://machinelearningmastery.com/]
 
-SUMMARY: [The purpose of this project is to construct a prediction model using various machine learning algorithms and to document the end-to-end steps using a template. The [Dataset Name] is a regression situation where we are trying to predict a real-number value for a given set of criteria.]
+SUMMARY: [The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The [Dataset Name] is a regression situation where we are trying to predict a real-number value for a given set of criteria.]
 
 INTRODUCTION: [Sample Paragraph - The dataset for this project originates from the UCI Machine Learning Repository. The Boston housing data was collected in 1978 and each of the 506 entries represents aggregated data about 14 features for homes from various suburbs in Boston, Massachusetts.]
 
-ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average RMSE of 4.561. Two algorithms (Random Forest and Gradient Boosting) achieved the top RMSE metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an RMSE metric of 3.105. After applying the optimized parameters, the Random Forest algorithm processed the testing dataset with an RMSE of 3.480, which was slightly above the prediction RMSE gained from the training data.]
+ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average RMSE of 4.561. Two algorithms (Random Forest and Gradient Boosting) achieved the top RMSE metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an RMSE metric of 3.105. After applying the optimized parameters, the Random Forest algorithm processed the testing dataset with an RMSE of 3.480, which was slightly above the prediction from the training data.]
 
 CONCLUSION: [Sample Paragraph - For this iteration, the Random Forest algorithm achieved the best overall training and validation results. For this dataset, the Random Forest algorithm could be considered for further modeling.]
 

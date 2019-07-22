@@ -1,7 +1,7 @@
 ---
-title: "Binary Classification Model for [Project Name] Using R version 10"
+title: "Binary Classification Model for [Project Name] Using R version 11"
 author: "David Lowe"
-date: "June 17, 2019"
+date: "August 7, 2019"
 output: 
   html_document: 
     toc: yes
@@ -14,11 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [http://machinelearningmastery.com/]
 
-SUMMARY: [Sample Paragraph - The purpose of this project is to construct a prediction model using various machine learning algorithms and to document the end-to-end steps using a template. The Connectionist Bench dataset is a binary classification situation where we are trying to predict one of the two possible outcomes.]
+SUMMARY: [Sample Paragraph - The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The Connectionist Bench dataset is a binary classification situation where we are trying to predict one of the two possible outcomes.]
 
 INTRODUCTION: [Sample Paragraph - The data file patterns obtained by bouncing sonar signals off a metal cylinder or a rock at various angles and under various conditions. The transmitted sonar signal is a frequency-modulated chirp, rising in frequency. The data set contains signals obtained from a variety of different aspect angles, spanning 90 degrees for the cylinder and 180 degrees for the rock. Each pattern is a set of 60 numbers in the range 0.0 to 1.0. Each number represents the energy within a particular frequency band, integrated over a certain period of time.]
 
-ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average accuracy of 77.62%. Two algorithms (Random Forest and Gradient Boosting) achieved the top accuracy metrics after the first round of modeling. After a series of tuning trials, Gradient Boosting turned in the top overall result and achieved an accuracy metric of 80.85%. After applying the optimized parameters, the Gradient Boosting algorithm processed the testing dataset with an accuracy of 80.65%, which was slightly below the prediction accuracy gained from the training data.]
+ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average accuracy of 77.62%. Two algorithms (Random Forest and Gradient Boosting) achieved the top accuracy metrics after the first round of modeling. After a series of tuning trials, Gradient Boosting turned in the top overall result and achieved an accuracy metric of 80.85%. After applying the optimized parameters, the Gradient Boosting algorithm processed the testing dataset with an accuracy of 80.65%, which was slightly below the prediction from the training data.]
 
 CONCLUSION: [Sample Paragraph - For this iteration, the Gradient Boosting algorithm achieved the best overall training and validation results. For this dataset, the Gradient Boosting algorithm could be considered for further modeling.]
 

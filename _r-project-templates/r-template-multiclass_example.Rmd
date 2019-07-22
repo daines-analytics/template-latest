@@ -1,7 +1,7 @@
 ---
-title: "Multi-Class Classification Model for [Project Name] Using R version 10"
+title: "Multi-Class Classification Model for [Project Name] Using R version 11"
 author: "David Lowe"
-date: "June 17, 2019"
+date: "August 7, 2019"
 output: 
   html_document: 
     toc: yes
@@ -14,11 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [http://machinelearningmastery.com/]
 
-SUMMARY: [The purpose of this project is to construct a prediction model using various machine learning algorithms and to document the end-to-end steps using a template. The [Dataset Name] is a multi-class classification situation where we are trying to predict one of the several possible outcomes.]
+SUMMARY: [The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The [Dataset Name] is a multi-class classification situation where we are trying to predict one of the several possible outcomes.]
 
 INTRODUCTION: [Sample Paragraph - The dataset involves predicting, from USA Forensic Science Service, six types of glass; defined in terms of their oxide content (i.e. Na, Fe, K, etc). The study of classification of types of glass was also partly motivated by criminological investigation. At the scene of the crime, the glass left can be used as evidence...if it is correctly identified!]
 
-ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average accuracy of 71.65%. Two algorithms (Random Forest and Gradient Boosting) achieved the top accuracy metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an accuracy metric of 80.47%. After applying the optimized parameters, the Random Forest algorithm processed the testing dataset with an accuracy of 78.69%, which was slightly below the prediction accuracy gained from the training data.]
+ANALYSIS: [Sample Paragraph - The baseline performance of the machine learning algorithms achieved an average accuracy of 71.65%. Two algorithms (Random Forest and Gradient Boosting) achieved the top accuracy metrics after the first round of modeling. After a series of tuning trials, Random Forest turned in the top overall result and achieved an accuracy metric of 80.47%. After applying the optimized parameters, the Random Forest algorithm processed the testing dataset with an accuracy of 78.69%, which was slightly below the prediction from the training data.]
 
 CONCLUSION: [Sample Paragraph - For this iteration, the Random Forest algorithm achieved the best overall training and validation results. For this dataset, Random Forest could be considered for further modeling.]
 
