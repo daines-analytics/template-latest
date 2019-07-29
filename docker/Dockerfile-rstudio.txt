@@ -1,6 +1,6 @@
 FROM rocker/verse:latest
 LABEL com.dainesanalytics.rstudio.version=v2.2
-RUN Rscript -e "install.packages(c('knitr', 'tidyverse', 'caret', 'corrplot', 'mailR', 'DMwR', 'ROCR', 'Hmisc', 'randomForest', 'e1071', 'elasticnet', 'gbm', 'xgboost', 'odbc', 'RMariaDB', 'Quandl', 'fpp2'))"
+RUN Rscript -e "install.packages(c('knitr', 'tidyverse', 'caret', 'corrplot', 'mailR', 'DMwR', 'ROCR', 'Hmisc', 'randomForest', 'e1071', 'elasticnet', 'gbm', 'xgboost', 'odbc', 'RMariaDB', 'Quandl', 'fpp2', 'PerformanceAnalytics', 'PortfolioAnalytics'))"
 RUN mkdir /home/rstudio/.ssh && chown rstudio:rstudio /home/rstudio/.ssh
 COPY --chown=rstudio:rstudio id_rsa /home/rstudio/.ssh
 RUN chmod 700 /home/rstudio/.ssh/id_rsa
