@@ -1,7 +1,7 @@
 ---
-title: "Binary Classification Model for [Project Name] Using R version 11"
+title: "Binary Classification Model for [Project Name] Using R version 12"
 author: "David Lowe"
-date: "August 2, 2019"
+date: "September 30, 2019"
 output: 
   html_document: 
     toc: yes
@@ -359,6 +359,7 @@ if (notifyStatus) email_notify(paste("Data Cleaning and Transformation has begun
 # Not applicable for this iteration of the project
 # Sample code for performing Attribute Importance Ranking (Block #1 of 3)
 
+# Feature Importance with Gradient Boosting Classifier
 # startTimeModule <- proc.time()
 # set.seed(seedNum)
 # library(gbm)
@@ -405,6 +406,7 @@ if (notifyStatus) email_notify(paste("Data Cleaning and Transformation has begun
 # Not applicable for this iteration of the project
 # Sample code for performing Recursive Feature Elimination (Block #1 of 2)
 
+# Perform Recursive Feature Elimination
 # startTimeModule <- proc.time()
 # set.seed(seedNum)
 # rfeCTRL <- rfeControl(functions=rfFuncs, method="cv", number=10)
@@ -459,6 +461,10 @@ Ensemble Algorithms: Bagged CART, Random Forest, and Gradient Boosting
 The random number seed is reset before each run to ensure that the evaluation of each algorithm is performed using the same data splits. It ensures the results are directly comparable.
 
 ### 4.a) Generate models using linear algorithms
+
+```{r}
+startModeling <- proc.time()
+```
 
 ```{r LR}
 # Logistic Regression (Classification)
@@ -528,7 +534,8 @@ results <- resamples(list(LR=fit.glm, CART=fit.cart, BagCART=fit.bagcart, RF=fit
 summary(results)
 dotplot(results)
 cat('The average accuracy from all models is:',
-    mean(c(results$values$`LR~Accuracy`,results$values$`CART~Accuracy`,results$values$`BagCART~Accuracy`,results$values$`RF~Accuracy`,results$values$`GBM~Accuracy`)))
+    mean(c(results$values$`LR~Accuracy`,results$values$`CART~Accuracy`,results$values$`BagCART~Accuracy`,results$values$`RF~Accuracy`,results$values$`GBM~Accuracy`)),'\n')
+cat('Total training time for all models:',proc.time()-startModeling)
 ```
 
 ## 5. Improve Accuracy or Results
