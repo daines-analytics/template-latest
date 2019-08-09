@@ -1,7 +1,7 @@
 FROM continuumio/anaconda3:latest
 LABEL com.dainesanalytics.anaconda.version=v2.1
 EXPOSE 8080
-RUN conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost pymysql
+RUN /opt/conda/bin/conda install -c conda-forge -y --freeze-installed imbalanced-learn xgboost pymysql
 RUN useradd -m -d /home/anaconda -s /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
 COPY --chown=anaconda:anaconda id_rsa /home/anaconda/.ssh
