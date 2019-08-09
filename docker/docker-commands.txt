@@ -1,5 +1,7 @@
 ##### Container prep commands #####
 
+ssh -i C:\Users\david.lowe\.ssh\DA-KP-Bastion.pem ec2-user@ec2-35-170-217-54.compute-1.amazonaws.com
+
 scp conda_env.txt docker_admin@10.0.4.174:/home/docker_admin
 
 scp .Renviron docker_admin@10.0.4.173:/home/docker_admin
