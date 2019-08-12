@@ -18,7 +18,7 @@ git clone git@github.com:daines-analytics/tabular-data-projects.git
 
 git clone git@github.com:daines-analytics/web-scraping-projects.git
 
-git fetch -all ; git reset -hard origin/master
+git fetch -all ; git reset --hard origin/master
 
 
 ##### Anaconda container commands #####
