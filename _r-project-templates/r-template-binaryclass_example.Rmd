@@ -56,7 +56,6 @@ library(caret)
 library(corrplot)
 library(DMwR)
 library(Hmisc)
-library(mailR)
 library(ROCR)
 library(stringr)
 ```
@@ -69,6 +68,7 @@ seedNum <- 888
 
 # Set up the notifyStatus flag to stop sending progress emails (setting to TRUE will send status emails!)
 notifyStatus <- FALSE
+if (notifyStatus) library(mailR)
 ```
 
 ```{r}
