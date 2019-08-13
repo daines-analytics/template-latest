@@ -407,34 +407,34 @@ if (notifyStatus) email_notify(paste("Data Cleaning and Transformation has begun
 # Sample code for performing Recursive Feature Elimination (Block #1 of 3)
 
 # Perform Recursive Feature Elimination using Random Forest
-startTimeModule <- proc.time()
-set.seed(seedNum)
-X_rfe <- Xy_train[,1:totAttr]
-y_rfe <- Xy_train[,totCol]
-normalization <- preProcess(X_rfe)
-X_rfe <- predict(normalization, X_rfe)
-X_rfe <- as.data.frame(X_rfe)
-rfeCTRL <- rfeControl(functions=rfFuncs, method="cv", number=10, repeats=1, verbose=FALSE, returnResamp="all")
-optimalVars <- 50
-subsets <- c(2:optimalVars)
-rfeProfile <- rfe(X_rfe, y_rfe, sizes=subsets, rfeControl=rfeCTRL)
-print(rfeProfile)
-plot(rfeProfile, type=c("g", "o"))
+# startTimeModule <- proc.time()
+# set.seed(seedNum)
+# X_rfe <- Xy_train[,1:totAttr]
+# y_rfe <- Xy_train[,totCol]
+# normalization <- preProcess(X_rfe)
+# X_rfe <- predict(normalization, X_rfe)
+# X_rfe <- as.data.frame(X_rfe)
+# rfeCTRL <- rfeControl(functions=rfFuncs, method="cv", number=10, repeats=1, verbose=FALSE, returnResamp="all")
+# optimalVars <- 50
+# subsets <- c(2:optimalVars)
+# rfeProfile <- rfe(X_rfe, y_rfe, sizes=subsets, rfeControl=rfeCTRL)
+# print(rfeProfile)
+# plot(rfeProfile, type=c("g", "o"))
 ```
 
 ```{r}
 # Sample code for performing Recursive Feature Elimination (Block #2 of 3)
 
 # Perfrom the Recursive Feature Elimination (RFE) technique
-numberRFEVars <- length(predictors(rfeProfile))
-if (numberRFEVars <= optimalVars) {
-  rfeAttributes <- predictors(rfeProfile)
-} else {
-  newProfile <- update(rfeProfile, x=X_rfe, y=y_rfe, size=optimalVars)
-  rfeAttributes <- newProfile$bestVar
-}
-cat('Number of attributes selected from the RFE algorithm:',length(rfeAttributes),'\n')
-print(rfeAttributes)
+# numberRFEVars <- length(predictors(rfeProfile))
+# if (numberRFEVars <= optimalVars) {
+#   rfeAttributes <- predictors(rfeProfile)
+# } else {
+#   newProfile <- update(rfeProfile, x=X_rfe, y=y_rfe, size=optimalVars)
+#   rfeAttributes <- newProfile$bestVar
+# }
+# cat('Number of attributes selected from the RFE algorithm:',length(rfeAttributes),'\n')
+# print(rfeAttributes)
 ```
 
 ```{r}
