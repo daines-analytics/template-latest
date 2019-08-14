@@ -85,7 +85,7 @@ email_notify <- function(msg=""){
   gateway <- Sys.getenv("SMTP_GATEWAY")
   smtpuser <- Sys.getenv("SMTP_USERNAME")
   password <- Sys.getenv("SMTP_PASSWORD")
-  sbj_line <- "Notification from R Binary Classification Script"
+  sbj_line <- "Notification from R Regression Modeling Script"
   send.mail(
     from = sender,
     to = receiver,
@@ -647,13 +647,13 @@ if (notifyStatus) email_notify(paste("Model Validation and Final Model Creation 
 
 ```{r PREDICT1}
 predictions <- predict(fit.final1, newdata=Xy_test)
-cat("The RMSE for the test data is:", RMSE(predictions, y_test))
+cat("The RMSE for the test data is:", RMSE(predictions, y_test),'\n')
 cat("The R2 score for the model is:", R2(predictions, y_test))
 ```
 
 ```{r PREDICT2}
 predictions <- predict(fit.final2, newdata=Xy_test)
-cat("The RMSE for the test data is:", RMSE(predictions, y_test))
+cat("The RMSE for the test data is:", RMSE(predictions, y_test),'\n')
 cat("The R2 score for the model is:", R2(predictions, y_test))
 ```
 
@@ -662,13 +662,13 @@ cat("The R2 score for the model is:", R2(predictions, y_test))
 ```{r FINALMODEL}
 startTimeModule <- proc.time()
 set.seed(seedNum)
-library(randomForest)
 
 # Combining datasets to form a complete dataset that will be used to train the final model
 Xy_complete <- rbind(Xy_train, Xy_test)
 
-finalModel <- randomForest(targetVar~., Xy_complete, mtry=5, na.action=na.omit)
-summary(finalModel)
+# library(randomForest)
+# finalModel <- randomForest(targetVar~., Xy_complete, mtry=5, na.action=na.omit)
+# summary(finalModel)
 proc.time()-startTimeModule
 ```
 

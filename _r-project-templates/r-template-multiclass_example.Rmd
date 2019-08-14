@@ -85,7 +85,7 @@ email_notify <- function(msg=""){
   gateway <- Sys.getenv("SMTP_GATEWAY")
   smtpuser <- Sys.getenv("SMTP_USERNAME")
   password <- Sys.getenv("SMTP_PASSWORD")
-  sbj_line <- "Notification from R Binary Classification Script"
+  sbj_line <- "Notification from R Multi-Class Classification Script"
   send.mail(
     from = sender,
     to = receiver,
@@ -627,13 +627,13 @@ confusionMatrix(predictions, y_test)
 ```{r}
 startTimeModule <- proc.time()
 set.seed(seedNum)
-library(randomForest)
 
 # Combining datasets to form a complete dataset that will be used to train the final model
 Xy_complete <- rbind(Xy_train, Xy_test)
 
-finalModel <- randomForest(targetVar~., Xy_complete, mtry=3, na.action=na.omit)
-summary(finalModel)
+# library(randomForest)
+# finalModel <- randomForest(targetVar~., Xy_complete, mtry=3, na.action=na.omit)
+# summary(finalModel)
 proc.time()-startTimeModule
 ```
 

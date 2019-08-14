@@ -620,7 +620,7 @@ perf <- performance(pred, measure = "tpr", x.measure = "fpr")
 plot(perf, colorize=TRUE)
 auc <- performance(pred, measure = "auc")
 auc <- auc@y.values[[1]]
-cat('Area under the curve is:', auc)
+cat('The Area Under the Curve (AUC) value is:', auc)
 ```
 
 ```{r PREDICT2}
@@ -632,7 +632,7 @@ perf <- performance(pred, measure = "tpr", x.measure = "fpr")
 plot(perf, colorize=TRUE)
 auc <- performance(pred, measure = "auc")
 auc <- auc@y.values[[1]]
-cat('Area under the curve is:', auc)
+cat('The Area Under the Curve (AUC) value is:', auc)
 ```
 
 ### 6.b) Create standalone model on entire training dataset
@@ -640,13 +640,13 @@ cat('Area under the curve is:', auc)
 ```{r FINALMODEL}
 startTimeModule <- proc.time()
 set.seed(seedNum)
-library(randomForest)
 
 # Combining datasets to form a complete dataset that will be used to train the final model
 Xy_complete <- rbind(Xy_train, Xy_test)
 
-finalModel <- randomForest(targetVar~., Xy_complete, mtry=2, na.action=na.omit)
-summary(finalModel)
+# library(randomForest)
+# finalModel <- randomForest(targetVar~., Xy_complete, mtry=2, na.action=na.omit)
+# summary(finalModel)
 proc.time()-startTimeModule
 ```
 
