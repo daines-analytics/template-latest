@@ -20,6 +20,7 @@ git clone git@github.com:daines-analytics/web-scraping-projects.git
 
 git fetch -all ; git reset --hard origin/master
 
+openssl pkcs8 -in <KEYFILENAME> -nocrypt -topk8 -outform DER | openssl sha1 -c
 
 ##### Anaconda container commands #####
 
