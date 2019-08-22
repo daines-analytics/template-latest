@@ -6,6 +6,8 @@ scp conda_env.txt docker_admin@10.0.4.174:/home/docker_admin
 
 scp .Renviron docker_admin@10.0.4.173:/home/docker_admin
 
+scp .ssh\id_rsa docker_admin@10.0.5.0:/home/docker_admin
+
 ssh docker_admin@IP_ADDRESS
 
 ssh -T git@github.com
