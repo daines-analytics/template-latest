@@ -52,3 +52,25 @@ scp docker_admin@10.0.4.173:/home/docker_admin/r-classification-<file>.Rmd ./
 
 ***** Mounted Storage Only *****
 docker container run --rm -it --env-file conda_env.txt -p 8080:8080 -v c:/Users/david.lowe/docker/anaconda:/home/anaconda/local --name jupyter-server anaconda/nonroot:v2 /bin/bash
+
+
+##### Docker CE Installation on CentOS #####
+
+$ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+
+$ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+$ sudo yum install docker-ce docker-ce-cli containerd.io
+
+$ sudo systemctl start docker
+
+$ sudo docker run hello-world
+
+$ sudo groupadd docker
+
+$ sudo usermod -aG docker $USER
+
+$ sudo yum remove docker-ce
+
+$ sudo rm -rf /var/lib/docker
+
