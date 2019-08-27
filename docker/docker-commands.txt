@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 14 #####
+##### Docker and Git commands cheatsheet version 15 #####
 
 ##### Container prep commands #####
 
@@ -25,6 +25,8 @@ git clone git@github.com:daines-analytics/web-scraping-projects.git
 git fetch --all ; git reset --hard origin/master
 
 openssl pkcs8 -in <KEYFILENAME> -nocrypt -topk8 -outform DER | openssl sha1 -c
+
+cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
 ##### Anaconda container commands #####
 
