@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 16 #####
+##### Docker and Git commands cheatsheet version 17 #####
 
 ##### Container prep commands #####
 
@@ -14,12 +14,11 @@ ssh docker_admin@IP_ADDRESS
 
 ssh -T git@github.com
 
-git clone git@github.com:daines-analytics/template-latest.git
-
-git clone git@github.com:daines-analytics/under-development.git
-
+git clone git@github.com:daines-analytics/deep-learning-projects.git
 git clone git@github.com:daines-analytics/tabular-data-projects.git
-
+git clone git@github.com:daines-analytics/template-latest.git
+git clone git@github.com:daines-analytics/time-series-projects.git
+git clone git@github.com:daines-analytics/under-development.git
 git clone git@github.com:daines-analytics/web-scraping-projects.git
 
 git fetch --all ; git reset --hard origin/master
