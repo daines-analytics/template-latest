@@ -13116,10 +13116,10 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Binary-Classification-Deep-Learning-Model-for-[Project-Name]-Using-Keras-Version-1">Binary Classification Deep Learning Model for [Project Name] Using Keras Version 1<a class="anchor-link" href="#Binary-Classification-Deep-Learning-Model-for-[Project-Name]-Using-Keras-Version-1">&#182;</a></h1><h3 id="David-Lowe">David Lowe<a class="anchor-link" href="#David-Lowe">&#182;</a></h3><h3 id="October-4,-2019">October 4, 2019<a class="anchor-link" href="#October-4,-2019">&#182;</a></h3><p>Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [<a href="https://machinelearningmastery.com/">https://machinelearningmastery.com/</a>]</p>
+<h1 id="Binary-Classification-Deep-Learning-Model-for-[Project-Name]-Using-Keras-Version-2">Binary Classification Deep Learning Model for [Project Name] Using Keras Version 2<a class="anchor-link" href="#Binary-Classification-Deep-Learning-Model-for-[Project-Name]-Using-Keras-Version-2">&#182;</a></h1><h3 id="David-Lowe">David Lowe<a class="anchor-link" href="#David-Lowe">&#182;</a></h3><h3 id="October-11,-2019">October 11, 2019<a class="anchor-link" href="#October-11,-2019">&#182;</a></h3><p>Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [<a href="https://machinelearningmastery.com/">https://machinelearningmastery.com/</a>]</p>
 <p>SUMMARY: [Sample Paragraph - The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The Pima Indians Diabetes dataset is a binary classification situation where we are trying to predict one of the two possible outcomes.]</p>
 <p>INTRODUCTION: [Sample Paragraph - This dataset is originally from the National Institute of Diabetes and Digestive and Kidney Diseases. The objective of the dataset is to diagnostically predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset. The datasets consists of several medical predictor variables and one target variable, Outcome. Predictor variables includes the number of pregnancies the patient has had, their BMI, insulin level, age, and so on.]</p>
-<p>ANALYSIS: [Sample Paragraph - The baseline performance of the model achieved an accuracy score of 77.47%. Using the optimized tuning parameter available, the model processed the validation dataset with an accuracy of ??.??%, which was worst than the training data and possibly due to over-fitting]</p>
+<p>ANALYSIS: [Sample Paragraph - The baseline performance of the model achieved an average accuracy score of 69.11%. Using the same training parameters, the model processed the test dataset with an accuracy of 78.12%, which was even better than results from the training data.]</p>
 <p>CONCLUSION: [Sample Paragraph - For this dataset, the model built using Keras and TensorFlow achieved a satisfactory result and should be considered for future modeling activities]</p>
 <p>Dataset Used: [Pima Indians Diabetes Data Set]</p>
 <p>Dataset ML Model: Binary classification with numerical attributes</p>
@@ -13174,6 +13174,9 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">smtplib</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">email.message</span> <span class="k">import</span> <span class="n">EmailMessage</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">StratifiedKFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
 </pre></div>
 
     </div>
@@ -13189,6 +13192,7 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Configure a new global `tensorflow` session</span>
 <span class="kn">import</span> <span class="nn">keras</span> <span class="k">as</span> <span class="nn">K</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.wrappers.scikit_learn</span> <span class="k">import</span> <span class="n">KerasClassifier</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="n">seedNum</span><span class="p">)</span>
 <span class="n">session_conf</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">intra_op_parallelism_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inter_op_parallelism_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -13230,8 +13234,20 @@ div#notebook {
 <span class="c1"># Set up the flag to stop sending progress emails (setting to True will send status emails!)</span>
 <span class="n">notifyStatus</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="c1"># Set the scoring metric</span>
-<span class="n">scoring</span> <span class="o">=</span> <span class="s1">&#39;accuracy&#39;</span>
+<span class="c1"># Set the flag for splitting the dataset</span>
+<span class="n">splitDataset</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">splitPercentage</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="c1"># Set various default Keras modeling parameters</span>
+<span class="n">kernel_init</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;adam&#39;</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">batches</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Set the number of folds for cross validation</span>
+<span class="n">folds</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 
     </div>
@@ -13347,12 +13363,31 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split into input (X) and output (y) variables</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">8</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split the original dataset into input (X) and output (y) variables</span>
+<span class="n">X_original</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">y_original</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">8</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of X_original:&#39;</span><span class="p">,</span> <span class="n">X_original</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;| Shape of y_original:&#39;</span><span class="p">,</span> <span class="n">y_original</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Shape of X_original: (768, 8) | Shape of y_original: (768,)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13360,6 +13395,45 @@ div#notebook {
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split the data further into training and test datasets</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">splitDataset</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_original</span><span class="p">,</span> <span class="n">y_original</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">splitPercentage</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_original</span><span class="p">,</span> <span class="n">y_original</span>
+    <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X_original</span><span class="p">,</span> <span class="n">y_original</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of X_train:&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;| Shape of y_train:&#39;</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of X_test:&#39;</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;| Shape of y_test:&#39;</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Shape of X_train: (576, 8) | Shape of y_train: (576,)
+Shape of X_test: (192, 8) | Shape of y_test: (192,)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 1 Load Data completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13379,7 +13453,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 2 Define Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13392,48 +13466,27 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the Keras model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the Keras model required for KerasClassifier</span>
+<span class="k">def</span> <span class="nf">create_model</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>WARNING: Logging before flag parsing goes to stderr.
-W0923 19:11:19.318527  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
-
-W0923 19:11:19.326524  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
-
-W0923 19:11:19.331522  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 2 Define Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13453,7 +13506,7 @@ W0923 19:11:19.331522  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 3 Compile Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13466,45 +13519,21 @@ W0923 19:11:19.331522  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compile the Keras model</span>
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">scoring</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize the Keras model</span>
+<span class="n">cv_model</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">create_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>W0923 19:11:19.456522  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
-
-W0923 19:11:19.506520  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:3376: The name tf.log is deprecated. Please use tf.math.log instead.
-
-W0923 19:11:19.513525  5980 deprecation.py:323] From C:\Users\david.lowe\Anaconda3\lib\site-packages\tensorflow\python\ops\nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.where in 2.0, which has the same broadcast rule as np.where
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 3 Compile Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13524,7 +13553,7 @@ Use tf.where in 2.0, which has the same broadcast rule as np.where
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 4 Fit Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13537,11 +13566,15 @@ Use tf.where in 2.0, which has the same broadcast rule as np.where
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Fit the Keras model on the dataset</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Fit and evaluate the Keras model using 10-fold cross validation</span>
+<span class="n">kfold</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">cv_model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfold</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generating results using the metrics of&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All cross-Validate results:&#39;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average cross-Validate results:&#39;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
 
     </div>
@@ -13557,334 +13590,28 @@ Use tf.where in 2.0, which has the same broadcast rule as np.where
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>W0923 19:11:19.792690  5980 deprecation_wrapper.py:119] From C:\Users\david.lowe\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:986: The name tf.assign_add is deprecated. Please use tf.compat.v1.assign_add instead.
-
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1/150
-768/768 [==============================] - 1s 852us/step - loss: 4.4672 - acc: 0.5898
-Epoch 2/150
-768/768 [==============================] - 0s 169us/step - loss: 3.8297 - acc: 0.6094
-Epoch 3/150
-768/768 [==============================] - 0s 156us/step - loss: 3.1609 - acc: 0.5703
-Epoch 4/150
-768/768 [==============================] - 0s 174us/step - loss: 1.9222 - acc: 0.5365
-Epoch 5/150
-768/768 [==============================] - 0s 139us/step - loss: 1.4600 - acc: 0.5755
-Epoch 6/150
-768/768 [==============================] - 0s 142us/step - loss: 1.1855 - acc: 0.5859
-Epoch 7/150
-768/768 [==============================] - 0s 148us/step - loss: 1.0255 - acc: 0.6146
-Epoch 8/150
-768/768 [==============================] - 0s 134us/step - loss: 1.0110 - acc: 0.6198
-Epoch 9/150
-768/768 [==============================] - 0s 150us/step - loss: 0.8797 - acc: 0.6432
-Epoch 10/150
-768/768 [==============================] - 0s 182us/step - loss: 0.8729 - acc: 0.6445
-Epoch 11/150
-768/768 [==============================] - 0s 149us/step - loss: 0.8025 - acc: 0.6589
-Epoch 12/150
-768/768 [==============================] - 0s 134us/step - loss: 0.7878 - acc: 0.6680
-Epoch 13/150
-768/768 [==============================] - 0s 186us/step - loss: 0.7203 - acc: 0.6654
-Epoch 14/150
-768/768 [==============================] - 0s 147us/step - loss: 0.7633 - acc: 0.6797
-Epoch 15/150
-768/768 [==============================] - 0s 147us/step - loss: 0.7016 - acc: 0.6914
-Epoch 16/150
-768/768 [==============================] - 0s 134us/step - loss: 0.6810 - acc: 0.6784
-Epoch 17/150
-768/768 [==============================] - 0s 141us/step - loss: 0.7391 - acc: 0.6758
-Epoch 18/150
-768/768 [==============================] - 0s 135us/step - loss: 0.7251 - acc: 0.6667
-Epoch 19/150
-768/768 [==============================] - 0s 135us/step - loss: 0.7211 - acc: 0.6667
-Epoch 20/150
-768/768 [==============================] - 0s 135us/step - loss: 0.7078 - acc: 0.6654
-Epoch 21/150
-768/768 [==============================] - 0s 151us/step - loss: 0.6552 - acc: 0.6914
-Epoch 22/150
-768/768 [==============================] - 0s 176us/step - loss: 0.6454 - acc: 0.6966
-Epoch 23/150
-768/768 [==============================] - 0s 169us/step - loss: 0.6386 - acc: 0.7070
-Epoch 24/150
-768/768 [==============================] - 0s 150us/step - loss: 0.6277 - acc: 0.6849
-Epoch 25/150
-768/768 [==============================] - 0s 150us/step - loss: 0.7070 - acc: 0.6758
-Epoch 26/150
-768/768 [==============================] - 0s 148us/step - loss: 0.6304 - acc: 0.6797
-Epoch 27/150
-768/768 [==============================] - 0s 158us/step - loss: 0.6091 - acc: 0.6836
-Epoch 28/150
-768/768 [==============================] - 0s 165us/step - loss: 0.6143 - acc: 0.7057
-Epoch 29/150
-768/768 [==============================] - 0s 145us/step - loss: 0.6380 - acc: 0.6862
-Epoch 30/150
-768/768 [==============================] - 0s 143us/step - loss: 0.6474 - acc: 0.6966
-Epoch 31/150
-768/768 [==============================] - 0s 141us/step - loss: 0.6157 - acc: 0.6836
-Epoch 32/150
-768/768 [==============================] - 0s 180us/step - loss: 0.6148 - acc: 0.7083
-Epoch 33/150
-768/768 [==============================] - 0s 150us/step - loss: 0.6624 - acc: 0.7005
-Epoch 34/150
-768/768 [==============================] - 0s 146us/step - loss: 0.6033 - acc: 0.7096
-Epoch 35/150
-768/768 [==============================] - 0s 191us/step - loss: 0.5671 - acc: 0.7148
-Epoch 36/150
-768/768 [==============================] - 0s 148us/step - loss: 0.6284 - acc: 0.7005
-Epoch 37/150
-768/768 [==============================] - 0s 160us/step - loss: 0.6660 - acc: 0.6849
-Epoch 38/150
-768/768 [==============================] - 0s 147us/step - loss: 0.6610 - acc: 0.6940
-Epoch 39/150
-768/768 [==============================] - 0s 156us/step - loss: 0.5861 - acc: 0.7318
-Epoch 40/150
-768/768 [==============================] - 0s 155us/step - loss: 0.6187 - acc: 0.6862
-Epoch 41/150
-768/768 [==============================] - 0s 186us/step - loss: 0.5643 - acc: 0.7227
-Epoch 42/150
-768/768 [==============================] - 0s 133us/step - loss: 0.5460 - acc: 0.7357
-Epoch 43/150
-768/768 [==============================] - 0s 143us/step - loss: 0.5873 - acc: 0.7109
-Epoch 44/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5569 - acc: 0.7253
-Epoch 45/150
-768/768 [==============================] - 0s 158us/step - loss: 0.5705 - acc: 0.7083
-Epoch 46/150
-768/768 [==============================] - 0s 163us/step - loss: 0.5831 - acc: 0.7174
-Epoch 47/150
-768/768 [==============================] - 0s 152us/step - loss: 0.6503 - acc: 0.6888
-Epoch 48/150
-768/768 [==============================] - 0s 141us/step - loss: 0.5752 - acc: 0.7135
-Epoch 49/150
-768/768 [==============================] - 0s 148us/step - loss: 0.5888 - acc: 0.7174
-Epoch 50/150
-768/768 [==============================] - 0s 176us/step - loss: 0.6175 - acc: 0.7135
-Epoch 51/150
-768/768 [==============================] - 0s 167us/step - loss: 0.5615 - acc: 0.7266
-Epoch 52/150
-768/768 [==============================] - 0s 184us/step - loss: 0.5630 - acc: 0.7292
-Epoch 53/150
-768/768 [==============================] - 0s 151us/step - loss: 0.6538 - acc: 0.6992
-Epoch 54/150
-768/768 [==============================] - 0s 158us/step - loss: 0.5716 - acc: 0.7305
-Epoch 55/150
-768/768 [==============================] - 0s 152us/step - loss: 0.5585 - acc: 0.7227
-Epoch 56/150
-768/768 [==============================] - 0s 147us/step - loss: 0.5611 - acc: 0.7422
-Epoch 57/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5470 - acc: 0.7161
-Epoch 58/150
-768/768 [==============================] - 0s 163us/step - loss: 0.6334 - acc: 0.7174
-Epoch 59/150
-768/768 [==============================] - 0s 174us/step - loss: 0.6004 - acc: 0.7279
-Epoch 60/150
-768/768 [==============================] - 0s 147us/step - loss: 0.5605 - acc: 0.7188
-Epoch 61/150
-768/768 [==============================] - 0s 147us/step - loss: 0.5669 - acc: 0.7174
-Epoch 62/150
-768/768 [==============================] - 0s 146us/step - loss: 0.5450 - acc: 0.7357
-Epoch 63/150
-768/768 [==============================] - 0s 146us/step - loss: 0.5659 - acc: 0.7279
-Epoch 64/150
-768/768 [==============================] - 0s 172us/step - loss: 0.5562 - acc: 0.7292
-Epoch 65/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5509 - acc: 0.7096
-Epoch 66/150
-768/768 [==============================] - 0s 148us/step - loss: 0.5932 - acc: 0.7057
-Epoch 67/150
-768/768 [==============================] - 0s 152us/step - loss: 0.5519 - acc: 0.7500
-Epoch 68/150
-768/768 [==============================] - 0s 180us/step - loss: 0.5552 - acc: 0.7174
-Epoch 69/150
-768/768 [==============================] - 0s 154us/step - loss: 0.5657 - acc: 0.7161
-Epoch 70/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5866 - acc: 0.7279
-Epoch 71/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5796 - acc: 0.7253
-Epoch 72/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5651 - acc: 0.7253
-Epoch 73/150
-768/768 [==============================] - 0s 143us/step - loss: 0.5748 - acc: 0.7266
-Epoch 74/150
-768/768 [==============================] - 0s 147us/step - loss: 0.5728 - acc: 0.7188
-Epoch 75/150
-768/768 [==============================] - 0s 154us/step - loss: 0.5227 - acc: 0.7513
-Epoch 76/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5416 - acc: 0.7474
-Epoch 77/150
-768/768 [==============================] - 0s 177us/step - loss: 0.5568 - acc: 0.7279
-Epoch 78/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5343 - acc: 0.7240
-Epoch 79/150
-768/768 [==============================] - 0s 136us/step - loss: 0.5494 - acc: 0.7357
-Epoch 80/150
-768/768 [==============================] - 0s 158us/step - loss: 0.5267 - acc: 0.7539
-Epoch 81/150
-768/768 [==============================] - 0s 139us/step - loss: 0.5431 - acc: 0.7461
-Epoch 82/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5436 - acc: 0.7253
-Epoch 83/150
-768/768 [==============================] - 0s 158us/step - loss: 0.5678 - acc: 0.7318
-Epoch 84/150
-768/768 [==============================] - 0s 154us/step - loss: 0.5917 - acc: 0.7187
-Epoch 85/150
-768/768 [==============================] - 0s 159us/step - loss: 0.5268 - acc: 0.7409
-Epoch 86/150
-768/768 [==============================] - 0s 194us/step - loss: 0.5432 - acc: 0.7409
-Epoch 87/150
-768/768 [==============================] - 0s 142us/step - loss: 0.5769 - acc: 0.7383
-Epoch 88/150
-768/768 [==============================] - 0s 148us/step - loss: 0.5638 - acc: 0.7292
-Epoch 89/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5764 - acc: 0.7318
-Epoch 90/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5345 - acc: 0.7383
-Epoch 91/150
-768/768 [==============================] - 0s 156us/step - loss: 0.5297 - acc: 0.7448
-Epoch 92/150
-768/768 [==============================] - 0s 159us/step - loss: 0.5281 - acc: 0.7396
-Epoch 93/150
-768/768 [==============================] - 0s 156us/step - loss: 0.5372 - acc: 0.7383
-Epoch 94/150
-768/768 [==============================] - 0s 178us/step - loss: 0.5473 - acc: 0.7435
-Epoch 95/150
-768/768 [==============================] - 0s 177us/step - loss: 0.5619 - acc: 0.7370
-Epoch 96/150
-768/768 [==============================] - 0s 169us/step - loss: 0.5398 - acc: 0.7383
-Epoch 97/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5679 - acc: 0.7227
-Epoch 98/150
-768/768 [==============================] - 0s 154us/step - loss: 0.5192 - acc: 0.7409
-Epoch 99/150
-768/768 [==============================] - 0s 154us/step - loss: 0.5758 - acc: 0.7135
-Epoch 100/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5240 - acc: 0.7513
-Epoch 101/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5347 - acc: 0.7500
-Epoch 102/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5487 - acc: 0.7448
-Epoch 103/150
-768/768 [==============================] - 0s 193us/step - loss: 0.5071 - acc: 0.7500
-Epoch 104/150
-768/768 [==============================] - 0s 167us/step - loss: 0.5436 - acc: 0.7487
-Epoch 105/150
-768/768 [==============================] - 0s 160us/step - loss: 0.5596 - acc: 0.7318
-Epoch 106/150
-768/768 [==============================] - 0s 173us/step - loss: 0.5377 - acc: 0.7279
-Epoch 107/150
-768/768 [==============================] - 0s 145us/step - loss: 0.5638 - acc: 0.7253
-Epoch 108/150
-768/768 [==============================] - 0s 139us/step - loss: 0.5753 - acc: 0.7227
-Epoch 109/150
-768/768 [==============================] - 0s 161us/step - loss: 0.5794 - acc: 0.7318
-Epoch 110/150
-768/768 [==============================] - 0s 184us/step - loss: 0.5384 - acc: 0.7578
-Epoch 111/150
-768/768 [==============================] - 0s 176us/step - loss: 0.5481 - acc: 0.7292
-Epoch 112/150
-768/768 [==============================] - 0s 202us/step - loss: 0.5746 - acc: 0.7383
-Epoch 113/150
-768/768 [==============================] - 0s 161us/step - loss: 0.5697 - acc: 0.7383
-Epoch 114/150
-768/768 [==============================] - 0s 146us/step - loss: 0.5964 - acc: 0.7370
-Epoch 115/150
-768/768 [==============================] - 0s 167us/step - loss: 0.5191 - acc: 0.7526
-Epoch 116/150
-768/768 [==============================] - 0s 177us/step - loss: 0.5679 - acc: 0.7357
-Epoch 117/150
-768/768 [==============================] - 0s 172us/step - loss: 0.5659 - acc: 0.7357
-Epoch 118/150
-768/768 [==============================] - 0s 191us/step - loss: 0.5448 - acc: 0.7279
-Epoch 119/150
-768/768 [==============================] - 0s 156us/step - loss: 0.5185 - acc: 0.7591
-Epoch 120/150
-768/768 [==============================] - 0s 215us/step - loss: 0.5613 - acc: 0.7305
-Epoch 121/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5466 - acc: 0.7435
-Epoch 122/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5254 - acc: 0.7409
-Epoch 123/150
-768/768 [==============================] - 0s 176us/step - loss: 0.5019 - acc: 0.7487
-Epoch 124/150
-768/768 [==============================] - 0s 151us/step - loss: 0.5125 - acc: 0.7695
-Epoch 125/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5309 - acc: 0.7552
-Epoch 126/150
-768/768 [==============================] - 0s 160us/step - loss: 0.5258 - acc: 0.7578
-Epoch 127/150
-768/768 [==============================] - 0s 160us/step - loss: 0.5515 - acc: 0.7266
-Epoch 128/150
-768/768 [==============================] - 0s 171us/step - loss: 0.5361 - acc: 0.7370
-Epoch 129/150
-768/768 [==============================] - 0s 185us/step - loss: 0.5300 - acc: 0.7357
-Epoch 130/150
-768/768 [==============================] - 0s 161us/step - loss: 0.5813 - acc: 0.7435
-Epoch 131/150
-768/768 [==============================] - 0s 146us/step - loss: 0.5047 - acc: 0.7617
-Epoch 132/150
-768/768 [==============================] - 0s 177us/step - loss: 0.5009 - acc: 0.7565
-Epoch 133/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5506 - acc: 0.7487
-Epoch 134/150
-768/768 [==============================] - 0s 161us/step - loss: 0.5011 - acc: 0.7500
-Epoch 135/150
-768/768 [==============================] - 0s 178us/step - loss: 0.5020 - acc: 0.7552
-Epoch 136/150
-768/768 [==============================] - 0s 181us/step - loss: 0.4896 - acc: 0.7604
-Epoch 137/150
-768/768 [==============================] - 0s 198us/step - loss: 0.5039 - acc: 0.7500
-Epoch 138/150
-768/768 [==============================] - 0s 176us/step - loss: 0.5279 - acc: 0.7383
-Epoch 139/150
-768/768 [==============================] - 0s 165us/step - loss: 0.5041 - acc: 0.7656
-Epoch 140/150
-768/768 [==============================] - 0s 172us/step - loss: 0.5616 - acc: 0.7383
-Epoch 141/150
-768/768 [==============================] - 0s 181us/step - loss: 0.5742 - acc: 0.7227
-Epoch 142/150
-768/768 [==============================] - 0s 181us/step - loss: 0.5219 - acc: 0.7513
-Epoch 143/150
-768/768 [==============================] - 0s 152us/step - loss: 0.5321 - acc: 0.7630
-Epoch 144/150
-768/768 [==============================] - 0s 155us/step - loss: 0.5533 - acc: 0.7383
-Epoch 145/150
-768/768 [==============================] - 0s 194us/step - loss: 0.5216 - acc: 0.7383
-Epoch 146/150
-768/768 [==============================] - 0s 143us/step - loss: 0.5227 - acc: 0.7539
-Epoch 147/150
-768/768 [==============================] - 0s 150us/step - loss: 0.5381 - acc: 0.7487
-Epoch 148/150
-768/768 [==============================] - 0s 165us/step - loss: 0.5129 - acc: 0.7487
-Epoch 149/150
-768/768 [==============================] - 0s 171us/step - loss: 0.5312 - acc: 0.7214
-Epoch 150/150
-768/768 [==============================] - 0s 172us/step - loss: 0.5565 - acc: 0.7539
+<pre>WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3376: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /opt/conda/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:986: The name tf.assign_add is deprecated. Please use tf.compat.v1.assign_add instead.
+
+Generating results using the metrics of [&#39;accuracy&#39;]
+All cross-Validate results: [0.67796611 0.68965517 0.56896552 0.68965518 0.72413795 0.71929825
+ 0.75438596 0.73684211 0.63157895 0.71929825]
+Average cross-Validate results: 0.6911783432942358
 </pre>
 </div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;keras.callbacks.History at 0x1e70f29d278&gt;</pre>
-</div>
-
 </div>
 
 </div>
@@ -13893,7 +13620,7 @@ Epoch 150/150
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 4 Fit Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13913,7 +13640,7 @@ Epoch 150/150
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 5 Evaluate Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13926,11 +13653,356 @@ Epoch 150/150
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the Keras model</span>
-<span class="n">scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create the final model for evaluating the test dataset</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch 1/150
+576/576 [==============================] - 1s 2ms/step - loss: 4.0667 - acc: 0.4358
+Epoch 2/150
+576/576 [==============================] - 0s 348us/step - loss: 1.4050 - acc: 0.5573
+Epoch 3/150
+576/576 [==============================] - 0s 324us/step - loss: 0.9867 - acc: 0.5799
+Epoch 4/150
+576/576 [==============================] - 0s 319us/step - loss: 0.8767 - acc: 0.6111
+Epoch 5/150
+576/576 [==============================] - 0s 317us/step - loss: 0.8178 - acc: 0.6198
+Epoch 6/150
+576/576 [==============================] - 0s 319us/step - loss: 0.7817 - acc: 0.6111
+Epoch 7/150
+576/576 [==============================] - 0s 311us/step - loss: 0.7352 - acc: 0.6146
+Epoch 8/150
+576/576 [==============================] - 0s 322us/step - loss: 0.6869 - acc: 0.6302
+Epoch 9/150
+576/576 [==============================] - 0s 313us/step - loss: 0.6777 - acc: 0.6319
+Epoch 10/150
+576/576 [==============================] - 0s 324us/step - loss: 0.6445 - acc: 0.6563
+Epoch 11/150
+576/576 [==============================] - 0s 314us/step - loss: 0.6546 - acc: 0.6476
+Epoch 12/150
+576/576 [==============================] - 0s 317us/step - loss: 0.6402 - acc: 0.6510
+Epoch 13/150
+576/576 [==============================] - 0s 314us/step - loss: 0.6332 - acc: 0.6458
+Epoch 14/150
+576/576 [==============================] - 0s 320us/step - loss: 0.6551 - acc: 0.6615
+Epoch 15/150
+576/576 [==============================] - 0s 317us/step - loss: 0.6319 - acc: 0.6493
+Epoch 16/150
+576/576 [==============================] - 0s 313us/step - loss: 0.6112 - acc: 0.6563
+Epoch 17/150
+576/576 [==============================] - 0s 312us/step - loss: 0.6083 - acc: 0.6615
+Epoch 18/150
+576/576 [==============================] - 0s 316us/step - loss: 0.6150 - acc: 0.6615
+Epoch 19/150
+576/576 [==============================] - 0s 315us/step - loss: 0.6273 - acc: 0.6736
+Epoch 20/150
+576/576 [==============================] - 0s 319us/step - loss: 0.6019 - acc: 0.6823
+Epoch 21/150
+576/576 [==============================] - 0s 325us/step - loss: 0.6049 - acc: 0.6667
+Epoch 22/150
+576/576 [==============================] - 0s 309us/step - loss: 0.6004 - acc: 0.6615
+Epoch 23/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5975 - acc: 0.6892
+Epoch 24/150
+576/576 [==============================] - 0s 321us/step - loss: 0.5839 - acc: 0.7031
+Epoch 25/150
+576/576 [==============================] - 0s 321us/step - loss: 0.5943 - acc: 0.6910
+Epoch 26/150
+576/576 [==============================] - 0s 322us/step - loss: 0.5771 - acc: 0.6788
+Epoch 27/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5788 - acc: 0.6927
+Epoch 28/150
+576/576 [==============================] - 0s 308us/step - loss: 0.5916 - acc: 0.6753
+Epoch 29/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5914 - acc: 0.6944
+Epoch 30/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5866 - acc: 0.6875
+Epoch 31/150
+576/576 [==============================] - 0s 316us/step - loss: 0.5695 - acc: 0.6962
+Epoch 32/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5861 - acc: 0.6823
+Epoch 33/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5759 - acc: 0.6910
+Epoch 34/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5871 - acc: 0.6806
+Epoch 35/150
+576/576 [==============================] - 0s 321us/step - loss: 0.5996 - acc: 0.6892
+Epoch 36/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5834 - acc: 0.6892
+Epoch 37/150
+576/576 [==============================] - 0s 327us/step - loss: 0.5866 - acc: 0.6962
+Epoch 38/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5919 - acc: 0.6944
+Epoch 39/150
+576/576 [==============================] - 0s 319us/step - loss: 0.5639 - acc: 0.7014
+Epoch 40/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5471 - acc: 0.7170
+Epoch 41/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5740 - acc: 0.7049
+Epoch 42/150
+576/576 [==============================] - 0s 322us/step - loss: 0.5599 - acc: 0.7066
+Epoch 43/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5619 - acc: 0.7205
+Epoch 44/150
+576/576 [==============================] - 0s 319us/step - loss: 0.5700 - acc: 0.6997
+Epoch 45/150
+576/576 [==============================] - 0s 309us/step - loss: 0.5534 - acc: 0.7205
+Epoch 46/150
+576/576 [==============================] - 0s 320us/step - loss: 0.5662 - acc: 0.6944
+Epoch 47/150
+576/576 [==============================] - 0s 319us/step - loss: 0.5683 - acc: 0.6927
+Epoch 48/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5545 - acc: 0.7083
+Epoch 49/150
+576/576 [==============================] - 0s 320us/step - loss: 0.5549 - acc: 0.7257
+Epoch 50/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5575 - acc: 0.7118
+Epoch 51/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5670 - acc: 0.6892
+Epoch 52/150
+576/576 [==============================] - 0s 308us/step - loss: 0.5555 - acc: 0.7083
+Epoch 53/150
+576/576 [==============================] - 0s 322us/step - loss: 0.5636 - acc: 0.6962
+Epoch 54/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5495 - acc: 0.7222
+Epoch 55/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5593 - acc: 0.7066
+Epoch 56/150
+576/576 [==============================] - 0s 332us/step - loss: 0.5654 - acc: 0.7240
+Epoch 57/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5642 - acc: 0.6997
+Epoch 58/150
+576/576 [==============================] - 0s 323us/step - loss: 0.5482 - acc: 0.7101
+Epoch 59/150
+576/576 [==============================] - 0s 321us/step - loss: 0.5451 - acc: 0.7205
+Epoch 60/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5645 - acc: 0.7049
+Epoch 61/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5778 - acc: 0.7031
+Epoch 62/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5645 - acc: 0.7222
+Epoch 63/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5579 - acc: 0.7066
+Epoch 64/150
+576/576 [==============================] - 0s 322us/step - loss: 0.5415 - acc: 0.7135
+Epoch 65/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5600 - acc: 0.7153
+Epoch 66/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5598 - acc: 0.7083
+Epoch 67/150
+576/576 [==============================] - 0s 306us/step - loss: 0.5541 - acc: 0.6997
+Epoch 68/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5465 - acc: 0.7153
+Epoch 69/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5410 - acc: 0.7205
+Epoch 70/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5345 - acc: 0.7292
+Epoch 71/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5366 - acc: 0.7257
+Epoch 72/150
+576/576 [==============================] - ETA: 0s - loss: 0.5515 - acc: 0.732 - 0s 310us/step - loss: 0.5531 - acc: 0.7274
+Epoch 73/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5628 - acc: 0.7170
+Epoch 74/150
+576/576 [==============================] - 0s 309us/step - loss: 0.5524 - acc: 0.7188
+Epoch 75/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5348 - acc: 0.7170
+Epoch 76/150
+576/576 [==============================] - 0s 319us/step - loss: 0.5322 - acc: 0.7326
+Epoch 77/150
+576/576 [==============================] - 0s 305us/step - loss: 0.5329 - acc: 0.7326
+Epoch 78/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5378 - acc: 0.7448
+Epoch 79/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5229 - acc: 0.7361
+Epoch 80/150
+576/576 [==============================] - 0s 305us/step - loss: 0.5296 - acc: 0.7309
+Epoch 81/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5374 - acc: 0.7500
+Epoch 82/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5395 - acc: 0.7309
+Epoch 83/150
+576/576 [==============================] - 0s 336us/step - loss: 0.5392 - acc: 0.7344
+Epoch 84/150
+576/576 [==============================] - 0s 319us/step - loss: 0.5298 - acc: 0.7552
+Epoch 85/150
+576/576 [==============================] - 0s 321us/step - loss: 0.5220 - acc: 0.7396
+Epoch 86/150
+576/576 [==============================] - 0s 326us/step - loss: 0.5327 - acc: 0.7448
+Epoch 87/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5253 - acc: 0.7500
+Epoch 88/150
+576/576 [==============================] - 0s 309us/step - loss: 0.5296 - acc: 0.7378
+Epoch 89/150
+576/576 [==============================] - 0s 332us/step - loss: 0.5206 - acc: 0.7587
+Epoch 90/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5171 - acc: 0.7448
+Epoch 91/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5429 - acc: 0.7170
+Epoch 92/150
+576/576 [==============================] - 0s 338us/step - loss: 0.5367 - acc: 0.7344
+Epoch 93/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5263 - acc: 0.7465
+Epoch 94/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5260 - acc: 0.7326
+Epoch 95/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5198 - acc: 0.7483
+Epoch 96/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5210 - acc: 0.7378
+Epoch 97/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5253 - acc: 0.7344
+Epoch 98/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5218 - acc: 0.7413
+Epoch 99/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5154 - acc: 0.7378
+Epoch 100/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5109 - acc: 0.7483
+Epoch 101/150
+576/576 [==============================] - 0s 309us/step - loss: 0.5264 - acc: 0.7500
+Epoch 102/150
+576/576 [==============================] - 0s 316us/step - loss: 0.5191 - acc: 0.7396
+Epoch 103/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5194 - acc: 0.7517
+Epoch 104/150
+576/576 [==============================] - 0s 306us/step - loss: 0.5115 - acc: 0.7378
+Epoch 105/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5171 - acc: 0.7517
+Epoch 106/150
+576/576 [==============================] - 0s 305us/step - loss: 0.5135 - acc: 0.7326
+Epoch 107/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5161 - acc: 0.7396
+Epoch 108/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5295 - acc: 0.7413
+Epoch 109/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5148 - acc: 0.7448
+Epoch 110/150
+576/576 [==============================] - 0s 311us/step - loss: 0.5164 - acc: 0.7378
+Epoch 111/150
+576/576 [==============================] - 0s 330us/step - loss: 0.5125 - acc: 0.7517
+Epoch 112/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5111 - acc: 0.7517
+Epoch 113/150
+576/576 [==============================] - 0s 309us/step - loss: 0.5078 - acc: 0.7517
+Epoch 114/150
+576/576 [==============================] - 0s 323us/step - loss: 0.5197 - acc: 0.7292
+Epoch 115/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5119 - acc: 0.7535
+Epoch 116/150
+576/576 [==============================] - 0s 309us/step - loss: 0.4987 - acc: 0.7622
+Epoch 117/150
+576/576 [==============================] - 0s 320us/step - loss: 0.4990 - acc: 0.7622
+Epoch 118/150
+576/576 [==============================] - 0s 313us/step - loss: 0.5178 - acc: 0.7274
+Epoch 119/150
+576/576 [==============================] - 0s 306us/step - loss: 0.5176 - acc: 0.7587
+Epoch 120/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5007 - acc: 0.7639
+Epoch 121/150
+576/576 [==============================] - ETA: 0s - loss: 0.4997 - acc: 0.748 - 0s 309us/step - loss: 0.5010 - acc: 0.7483
+Epoch 122/150
+576/576 [==============================] - 0s 318us/step - loss: 0.4953 - acc: 0.7622
+Epoch 123/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5076 - acc: 0.7483
+Epoch 124/150
+576/576 [==============================] - 0s 307us/step - loss: 0.5218 - acc: 0.7344
+Epoch 125/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5066 - acc: 0.7483
+Epoch 126/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5246 - acc: 0.7413
+Epoch 127/150
+576/576 [==============================] - 0s 316us/step - loss: 0.5025 - acc: 0.7587
+Epoch 128/150
+576/576 [==============================] - 0s 341us/step - loss: 0.5117 - acc: 0.7552
+Epoch 129/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5091 - acc: 0.7604
+Epoch 130/150
+576/576 [==============================] - 0s 310us/step - loss: 0.4970 - acc: 0.7517
+Epoch 131/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5120 - acc: 0.7483
+Epoch 132/150
+576/576 [==============================] - 0s 317us/step - loss: 0.5094 - acc: 0.7500
+Epoch 133/150
+576/576 [==============================] - 0s 318us/step - loss: 0.4996 - acc: 0.7535
+Epoch 134/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5018 - acc: 0.7431
+Epoch 135/150
+576/576 [==============================] - 0s 326us/step - loss: 0.5105 - acc: 0.7656
+Epoch 136/150
+576/576 [==============================] - 0s 310us/step - loss: 0.4918 - acc: 0.7708
+Epoch 137/150
+576/576 [==============================] - 0s 318us/step - loss: 0.5053 - acc: 0.7622
+Epoch 138/150
+576/576 [==============================] - 0s 315us/step - loss: 0.5039 - acc: 0.7622
+Epoch 139/150
+576/576 [==============================] - 0s 310us/step - loss: 0.5018 - acc: 0.7448
+Epoch 140/150
+576/576 [==============================] - 0s 314us/step - loss: 0.5221 - acc: 0.7622
+Epoch 141/150
+576/576 [==============================] - 0s 311us/step - loss: 0.4999 - acc: 0.7535
+Epoch 142/150
+576/576 [==============================] - 0s 315us/step - loss: 0.4966 - acc: 0.7639
+Epoch 143/150
+576/576 [==============================] - 0s 308us/step - loss: 0.4969 - acc: 0.7604
+Epoch 144/150
+576/576 [==============================] - ETA: 0s - loss: 0.4930 - acc: 0.766 - 0s 314us/step - loss: 0.4972 - acc: 0.7656
+Epoch 145/150
+576/576 [==============================] - 0s 315us/step - loss: 0.4951 - acc: 0.7552
+Epoch 146/150
+576/576 [==============================] - 0s 311us/step - loss: 0.4900 - acc: 0.7569
+Epoch 147/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5011 - acc: 0.7552
+Epoch 148/150
+576/576 [==============================] - 0s 315us/step - loss: 0.4991 - acc: 0.7604
+Epoch 149/150
+576/576 [==============================] - 0s 312us/step - loss: 0.5153 - acc: 0.7604
+Epoch 150/150
+576/576 [==============================] - 0s 306us/step - loss: 0.4845 - acc: 0.7691
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;keras.callbacks.History at 0x7f2abef9c6d8&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the Keras model on previously unseen data</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
@@ -13949,11 +14021,11 @@ Epoch 150/150
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>768/768 [==============================] - 0s 121us/step
+<pre>192/192 [==============================] - 0s 1ms/step
 
-acc: 77.47%
+acc: 78.12%
 
-loss: 46.73%
+loss: 47.15%
 </pre>
 </div>
 </div>
@@ -13964,7 +14036,7 @@ loss: 46.73%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 5 Evaluate Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13984,7 +14056,7 @@ loss: 46.73%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 6 Finalize Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13997,15 +14069,15 @@ loss: 46.73%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make class predictions with the model</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_original</span><span class="p">)</span>
 
-<span class="c1"># Summarize the first 10 cases</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> =&gt; </span><span class="si">%d</span><span class="s1"> (expected </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="c1"># Summarize the first 20 cases</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> =&gt; </span><span class="si">%d</span><span class="s1"> (expected </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X_original</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_original</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 </pre></div>
 
     </div>
@@ -14022,16 +14094,26 @@ loss: 46.73%
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[6.0, 148.0, 72.0, 35.0, 0.0, 33.6, 0.627, 50.0] =&gt; 1 (expected 1)
+<pre>[6.0, 148.0, 72.0, 35.0, 0.0, 33.6, 0.627, 50.0] =&gt; 0 (expected 1)
 [1.0, 85.0, 66.0, 29.0, 0.0, 26.6, 0.351, 31.0] =&gt; 0 (expected 0)
 [8.0, 183.0, 64.0, 0.0, 0.0, 23.3, 0.672, 32.0] =&gt; 1 (expected 1)
 [1.0, 89.0, 66.0, 23.0, 94.0, 28.1, 0.167, 21.0] =&gt; 0 (expected 0)
 [0.0, 137.0, 40.0, 35.0, 168.0, 43.1, 2.288, 33.0] =&gt; 1 (expected 1)
 [5.0, 116.0, 74.0, 0.0, 0.0, 25.6, 0.201, 30.0] =&gt; 0 (expected 0)
 [3.0, 78.0, 50.0, 32.0, 88.0, 31.0, 0.248, 26.0] =&gt; 0 (expected 1)
-[10.0, 115.0, 0.0, 0.0, 0.0, 35.3, 0.134, 29.0] =&gt; 1 (expected 0)
+[10.0, 115.0, 0.0, 0.0, 0.0, 35.3, 0.134, 29.0] =&gt; 0 (expected 0)
 [2.0, 197.0, 70.0, 45.0, 543.0, 30.5, 0.158, 53.0] =&gt; 1 (expected 1)
 [8.0, 125.0, 96.0, 0.0, 0.0, 0.0, 0.232, 54.0] =&gt; 0 (expected 1)
+[4.0, 110.0, 92.0, 0.0, 0.0, 37.6, 0.191, 30.0] =&gt; 0 (expected 0)
+[10.0, 168.0, 74.0, 0.0, 0.0, 38.0, 0.537, 34.0] =&gt; 1 (expected 1)
+[10.0, 139.0, 80.0, 0.0, 0.0, 27.1, 1.441, 57.0] =&gt; 0 (expected 0)
+[1.0, 189.0, 60.0, 23.0, 846.0, 30.1, 0.398, 59.0] =&gt; 1 (expected 1)
+[5.0, 166.0, 72.0, 19.0, 175.0, 25.8, 0.587, 51.0] =&gt; 1 (expected 1)
+[7.0, 100.0, 0.0, 0.0, 0.0, 30.0, 0.484, 32.0] =&gt; 0 (expected 1)
+[0.0, 118.0, 84.0, 47.0, 230.0, 45.8, 0.551, 31.0] =&gt; 0 (expected 1)
+[7.0, 107.0, 74.0, 0.0, 0.0, 29.6, 0.254, 31.0] =&gt; 0 (expected 1)
+[1.0, 103.0, 30.0, 38.0, 83.0, 43.3, 0.183, 33.0] =&gt; 0 (expected 0)
+[1.0, 115.0, 70.0, 30.0, 96.0, 34.6, 0.529, 32.0] =&gt; 0 (expected 1)
 </pre>
 </div>
 </div>
@@ -14042,7 +14124,7 @@ loss: 46.73%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 6 Finalize Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -14055,7 +14137,7 @@ loss: 46.73%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Total time for the script:&#39;</span><span class="p">,(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTimeScript</span><span class="p">))</span>
@@ -14075,7 +14157,7 @@ loss: 46.73%
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Total time for the script: 0:00:20.337577
+<pre>Total time for the script: 0:04:07.515225
 </pre>
 </div>
 </div>
