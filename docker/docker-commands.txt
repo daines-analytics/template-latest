@@ -1,16 +1,12 @@
-##### Docker and Git commands cheatsheet version 17 #####
+##### Docker and Git commands cheatsheet version 18 #####
 
 ##### Container prep commands #####
-
 ssh -i C:\Users\david.lowe\.ssh\DA-KP-Bastion.pem ec2-user@ec2-35-170-217-54.compute-1.amazonaws.com
 
-scp conda_env.txt docker_admin@10.0.4.174:/home/docker_admin
-
-scp .Renviron docker_admin@10.0.4.173:/home/docker_admin
-
-scp .ssh\id_rsa docker_admin@10.0.5.0:/home/docker_admin
-
-ssh docker_admin@IP_ADDRESS
+scp conda_env.txt docker@10.0.5.72:/home/docker
+scp .Renviron docker@10.0.5.73:/home/docker
+scp id_rsa docker@10.0.5.72:/home/docker
+scp Dockerfile docker@10.0.5.72:/home/docker
 
 ssh -T git@github.com
 
@@ -28,14 +24,13 @@ openssl pkcs8 -in <KEYFILENAME> -nocrypt -topk8 -outform DER | openssl sha1 -c
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
 ##### Anaconda container commands #####
-
 docker image build -t anaconda/nonroot:v2 .
 
 docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v2 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
-/opt/conda/bin/jupyter notebook password (run server at least once first)
+/opt/conda/bin/jupyter notebook password  # Run server at least once first!
 
 jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
@@ -43,7 +38,6 @@ docker cp mycontainer:/home/anaconda/under-development/<folder>/<file>.ipynb ./
 
 
 ##### RStudio container commands #####
-
 docker image build -t rstudio/nonroot:v2 .
 
 docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v2
@@ -56,7 +50,6 @@ docker container run --rm -it --env-file conda_env.txt -p 8080:8080 -v c:/Users/
 
 
 ##### Docker CE Installation on CentOS #####
-
 $ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 
 $ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -69,10 +62,10 @@ $ sudo systemctl enable docker
 
 $ sudo docker run hello-world
 
-$ sudo groupadd docker
+$ sudo groupadd docker # Might not be necessary - Check first
+$ sudo usermod -aG docker $USER # Might not be necessary - Check first
 
-$ sudo usermod -aG docker $USER
-
+##### REMOVAL ONLY #####
 $ sudo yum remove docker-ce
 
 $ sudo rm -rf /var/lib/docker
