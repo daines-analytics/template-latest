@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 18 #####
+##### Docker and Git commands cheatsheet version 19 #####
 
 ##### Container prep commands #####
 ssh -i C:\Users\david.lowe\.ssh\DA-KP-Bastion.pem ec2-user@ec2-35-170-217-54.compute-1.amazonaws.com
@@ -65,8 +65,22 @@ $ sudo docker run hello-world
 $ sudo groupadd docker # Might not be necessary - Check first
 $ sudo usermod -aG docker $USER # Might not be necessary - Check first
 
-##### REMOVAL ONLY #####
+
+##### Docker REMOVAL ONLY #####
 $ sudo yum remove docker-ce
 
 $ sudo rm -rf /var/lib/docker
 
+
+##### AWS EC2 Setup for FastAI #####
+ssh -i ~/.ssh/da-ml-keypair.pem -L localhost:8888:localhost:8888 ubuntu@<your instance IP>
+
+git clone https://github.com/fastai/course-v3
+
+conda update conda
+
+conda install -c pytorch -c fastai fastai pytorch torchvision cuda92
+
+cd course-v3/nbs/dl1
+
+jupyter notebook
