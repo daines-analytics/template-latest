@@ -1,6 +1,6 @@
 FROM centos:latest
 FROM python:latest
-LABEL com.dainesanalytics.python.version=v1.2
+LABEL com.dainesanalytics.python.version=v1.1
 EXPOSE 8080
 RUN pip install --prefer-binary jupyterlab
 RUN pip install --prefer-binary numpy scipy matplotlib pandas scikit-learn
