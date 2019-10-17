@@ -1,0 +1,12 @@
+FROM python:latest
+LABEL com.dainesanalytics.python.version=v1.0
+EXPOSE 8080
+RUN /opt/conda/bin/conda install -y -c conda-forge 
+RUN /opt/conda/bin/pip PyMySQL imbalanced-learn install xgboost pmdarima tensorflow keras
+RUN useradd -m -d /home/python -s /bin/bash python
+RUN mkdir /home/python/.ssh && chown python:python /home/python/.ssh
+COPY --chown=python:python id_rsa /home/python/.ssh
+RUN chmod 700 /home/python/.ssh/id_rsa
+USER python
+RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+WORKDIR /home/python
