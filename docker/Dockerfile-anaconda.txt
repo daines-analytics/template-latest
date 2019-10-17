@@ -1,8 +1,10 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.anaconda.version=v2.5
+LABEL com.dainesanalytics.anaconda.version=v2.6
 EXPOSE 8080
-RUN /opt/conda/bin/conda install -y -c conda-forge PyMySQL imbalanced-learn tensorflow keras
+RUN /opt/conda/bin/conda update -y anaconda
 RUN /opt/conda/bin/pip install xgboost pmdarima
+RUN /opt/conda/bin/conda install -y -c conda-forge imbalanced-learn
+RUN /opt/conda/bin/conda install -y PyMySQL keras
 RUN useradd -m -d /home/anaconda -s /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
 COPY --chown=anaconda:anaconda id_rsa /home/anaconda/.ssh
