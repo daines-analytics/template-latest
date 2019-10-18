@@ -1,10 +1,10 @@
-FROM centos:latest
-FROM python:latest
-LABEL com.dainesanalytics.python.version=v1.1
+FROM python:3.7-buster
+LABEL com.dainesanalytics.python.version=v1.2
 EXPOSE 8080
-RUN pip install --prefer-binary jupyterlab
-RUN pip install --prefer-binary numpy scipy matplotlib pandas scikit-learn
-RUN pip install --prefer-binary PyMySQL imbalanced-learn xgboost pmdarima tensorflow keras
+RUN pip install --upgrade pip
+RUN pip3 install --prefer-binary numpy scipy matplotlib ipython sympy pandas jupyterlab
+RUN pip3 install --prefer-binary PyMySQL imbalanced-learn xgboost scikit-learn pmdarima
+RUN pip3 install --prefer-binary tensorflow keras
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
 COPY --chown=pythonml:pythonml id_rsa /home/pythonml/.ssh
