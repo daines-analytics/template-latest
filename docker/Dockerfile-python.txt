@@ -4,7 +4,7 @@ EXPOSE 8080
 RUN pip install --upgrade pip
 RUN pip3 install --prefer-binary numpy scipy matplotlib ipython sympy pandas jupyterlab
 RUN pip3 install --prefer-binary PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
-RUN pip3 install --prefer-binary seaborn pmdarima requests beautifulsoup4
+RUN pip3 install --prefer-binary seaborn pmdarima lxml html5lib requests beautifulsoup4
 RUN pip3 install --prefer-binary tensorflow keras
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
