@@ -1,7 +1,8 @@
-##### Docker and Git commands cheatsheet version 21 #####
+##### Docker and Git commands cheatsheet version 22 #####
 
 ##### Container prep commands #####
-ssh -i C:\Users\david.lowe\.ssh\DA-KP-Bastion.pem ec2-user@ec2-35-170-217-54.compute-1.amazonaws.com
+ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@ec2-35-170-217-54.compute-1.amazonaws.com
+ssh -i C:\Users\david\.ssh\da-ml-keypair.pem ec2-user@ec2-?-?-?-?.compute-1.amazonaws.com
 
 scp conda_env.txt docker@10.0.5.72:/home/docker
 scp .Renviron docker@10.0.5.73:/home/docker
