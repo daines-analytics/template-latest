@@ -3,6 +3,7 @@
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
 ssh -i ~/.ssh/da-ml-keypair.pem -L localhost:8888:localhost:8888 ubuntu@<instance IP>
+scp -i ~/.ssh/da-ml-keypair.pem conda_env.txt ubuntu@<instance IP>:/home/ubuntu
 
 
 ##### Container prep commands #####
@@ -87,6 +88,8 @@ $ sudo rm -rf /var/lib/docker
 
 
 ##### AWS EC2 Setup for FastAI #####
+sudo apt-get update | sudo apt-get upgrade | sudo apt-get autoremove
+
 git clone https://github.com/daines-analytics/template-latest.git
 
 git clone https://github.com/daines-analytics/deep-learning-projects.git
@@ -94,12 +97,7 @@ git clone https://github.com/daines-analytics/deep-learning-projects.git
 git clone https://github.com/fastai/course-v3
 
 for TensorFlow(+Keras2) with Python3 (CUDA 10.0 and Intel MKL-DNN) -> source activate tensorflow_p36
-
 for PyTorch with Python3 (CUDA 10.0 and Intel MKL) -> source activate pytorch_p36
-
-for base Python3 (CUDA 9.0) -> source activate python3
-
-sudo apt-get update | sudo apt-get upgrade | sudo apt-get autoremove
 
 conda update conda
 
@@ -107,4 +105,5 @@ conda install -c pytorch -c fastai fastai pytorch torchvision cuda92
 
 cd course-v3/nbs/dl1
 
+source ./conda_unix.txt
 jupyter notebook
