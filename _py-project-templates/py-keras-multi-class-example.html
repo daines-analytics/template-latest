@@ -13077,12 +13077,12 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Multi-Class-Classification-Deep-Learning-Model-for-[Sample-Project]-Using-Keras-Version-1">Multi-Class Classification Deep Learning Model for [Sample Project] Using Keras Version 1<a class="anchor-link" href="#Multi-Class-Classification-Deep-Learning-Model-for-[Sample-Project]-Using-Keras-Version-1">&#182;</a></h1><h3 id="David-Lowe">David Lowe<a class="anchor-link" href="#David-Lowe">&#182;</a></h3><h3 id="October-18,-2019">October 18, 2019<a class="anchor-link" href="#October-18,-2019">&#182;</a></h3><p>Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [<a href="https://machinelearningmastery.com/">https://machinelearningmastery.com/</a>]</p>
-<p>SUMMARY: [Sample Paragraph - The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The Iris Diabetes dataset is a multi-class classification situation where we are trying to predict one of several (more than two) possible outcomes.]</p>
+<h1 id="Multi-Class-Classification-Deep-Learning-Model-for-[PROJECT-NAME]-Using-Keras-Version-2">Multi-Class Classification Deep Learning Model for [PROJECT NAME] Using Keras Version 2<a class="anchor-link" href="#Multi-Class-Classification-Deep-Learning-Model-for-[PROJECT-NAME]-Using-Keras-Version-2">&#182;</a></h1><h3 id="David-Lowe">David Lowe<a class="anchor-link" href="#David-Lowe">&#182;</a></h3><h3 id="October-31,-2019">October 31, 2019<a class="anchor-link" href="#October-31,-2019">&#182;</a></h3><p>Template Credit: Adapted from a template made available by Dr. Jason Brownlee of Machine Learning Mastery. [<a href="https://machinelearningmastery.com/">https://machinelearningmastery.com/</a>]</p>
+<p>SUMMARY: The purpose of this project is to construct a predictive model using various machine learning algorithms and to document the end-to-end steps using a template. The [PROJECT NAME] dataset is a multi-class classification situation where we are trying to predict one of several (more than two) possible outcomes.</p>
 <p>INTRODUCTION: [Sample Paragraph - This is perhaps the best known database to be found in the pattern recognition literature. Fisher's paper is a classic in the field and is referenced frequently to this day. (See Duda &amp; Hart, for example.) The data set contains three classes of 50 instances each, where each class refers to a type of iris plant. One class is linearly separable from the other two; the latter are NOT linearly separable from each other.]</p>
-<p>ANALYSIS: [Sample Paragraph - The baseline performance of the model achieved an average accuracy score of 96.67%, which was consistent with other classical machine learning algorithms.]</p>
-<p>CONCLUSION: [Sample Paragraph - For this dataset, the model built using Keras and TensorFlow achieved a satisfactory result and should be considered for future modeling activities]</p>
-<p>Dataset Used: [Iris Data Set]</p>
+<p>ANALYSIS: [Sample Paragraph - The baseline performance of the model achieved an average accuracy score of 97.31%. After tuning the hyperparameters, the final model processed the test dataset with an accuracy of 97.37%, which was consistent with the baseline result from the training dataset.]</p>
+<p>CONCLUSION: For this dataset, the model built using Keras and TensorFlow achieved a satisfactory result and should be considered for future modeling activities.</p>
+<p>Dataset Used: [PROJECT NAME] Dataset</p>
 <p>Dataset ML Model: Multi-class classification with numerical attributes</p>
 <p>Dataset Reference: [<a href="https://archive.ics.uci.edu/ml/machine-learning-databases/iris/">https://archive.ics.uci.edu/ml/machine-learning-databases/iris/</a>]</p>
 <p>One potential source of performance benchmarks: [<a href="https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/">https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/</a>]</p>
@@ -13108,11 +13108,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create the random seed numbers for reproducible results</span>
-<span class="n">seedNum</span> <span class="o">=</span> <span class="mi">88</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set the warning message filter</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13122,7 +13124,21 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set the random seed number for reproducible results</span>
+<span class="n">seedNum</span> <span class="o">=</span> <span class="mi">888</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load libraries and packages</span>
@@ -13130,80 +13146,117 @@ div#notebook {
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seedNum</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">keras</span> <span class="k">as</span> <span class="nn">K</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.wrappers.scikit_learn</span> <span class="k">import</span> <span class="n">KerasClassifier</span>
+<span class="kn">from</span> <span class="nn">keras.wrappers.scikit_learn</span> <span class="k">import</span> <span class="n">KerasRegressor</span>
+<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">import</span> <span class="nn">smtplib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">email.message</span> <span class="k">import</span> <span class="n">EmailMessage</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">StratifiedKFold</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">RandomizedSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Configure a new global `tensorflow` session</span>
-<span class="kn">import</span> <span class="nn">keras</span> <span class="k">as</span> <span class="nn">K</span>
-<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
-<span class="kn">from</span> <span class="nn">keras.wrappers.scikit_learn</span> <span class="k">import</span> <span class="n">KerasClassifier</span>
-<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="n">seedNum</span><span class="p">)</span>
-<span class="n">session_conf</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">intra_op_parallelism_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inter_op_parallelism_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">(),</span> <span class="n">config</span><span class="o">=</span><span class="n">session_conf</span><span class="p">)</span>
-<span class="n">K</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">set_session</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
-</pre></div>
+<div class="output_wrapper">
+<div class="output">
 
-    </div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Using TensorFlow backend.
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Begin the timer for the script processing</span>
 <span class="n">startTimeScript</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
+<span class="c1"># Set up the verbose flag to print detailed messages for debugging (setting to True will activate)</span>
+<span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">debugging</span><span class="o">.</span><span class="n">set_log_device_placement</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+
+<span class="c1"># Set up the number of CPU cores available for multi-thread processing</span>
+<span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Num GPUs Available: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)))</span>
+
 <span class="c1"># Set up the flag to stop sending progress emails (setting to True will send status emails!)</span>
 <span class="n">notifyStatus</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Set the number of folds for cross validation</span>
+<span class="n">n_folds</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="c1"># Set the flag for splitting the dataset</span>
 <span class="n">splitDataset</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">splitPercentage</span> <span class="o">=</span> <span class="mf">0.25</span>
 
 <span class="c1"># Set various default Keras modeling parameters</span>
-<span class="n">model_kernel_init</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
-<span class="n">model_loss</span> <span class="o">=</span> <span class="s1">&#39;categorical_crossentropy&#39;</span>
-<span class="n">model_optimizer</span> <span class="o">=</span> <span class="s1">&#39;adam&#39;</span>
-<span class="n">model_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
-<span class="n">model_epochs</span> <span class="o">=</span> <span class="mi">200</span>
-<span class="n">model_batches</span> <span class="o">=</span> <span class="mi">5</span>
-
-<span class="c1"># Set the number of folds for cross validation</span>
-<span class="n">folds</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">default_kernel_init</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">RandomNormal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+<span class="n">default_loss</span> <span class="o">=</span> <span class="s1">&#39;categorical_crossentropy&#39;</span>
+<span class="n">default_optimizer</span> <span class="o">=</span> <span class="s1">&#39;adam&#39;</span>
+<span class="n">default_epochs</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">default_batches</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">default_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Num GPUs Available:  0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up the email notification function</span>
@@ -13217,7 +13270,7 @@ div#notebook {
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Incomplete email setup info. Script Processing Aborted!!!&quot;</span><span class="p">)</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">()</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">msg_text</span><span class="p">)</span>
-    <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Notification from Keras Binary Classification Script&#39;</span>
+    <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Notification from Keras Multi-Class Classification Script&#39;</span>
     <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sender</span>
     <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">receiver</span>
     <span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">gateway</span><span class="p">,</span> <span class="mi">587</span><span class="p">)</span>
@@ -13234,7 +13287,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 0 Prepare Environment completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13254,7 +13307,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 1 Load Data has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13267,7 +13320,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load the dataset</span>
@@ -13450,7 +13503,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split the original dataset into input (X) and output (y) variables</span>
@@ -13484,15 +13537,15 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Encode class values as integers and perform one-hot-encoding</span>
-<span class="n">encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
 <span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y_original</span><span class="p">)</span>
-<span class="n">encoded_y</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_original</span><span class="p">)</span>
-<span class="n">y_original_dummy</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">encoded_y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">y_original_dummy</span><span class="p">)</span>
+<span class="n">y_transformed</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_original</span><span class="p">)</span>
+<span class="n">y_encoded</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_transformed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_encoded</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13669,17 +13722,19 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split the data further into training and test datasets</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_encoded</span> <span class="o">=</span> <span class="n">X_original</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">splitDataset</span><span class="p">):</span>
-    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_original</span><span class="p">,</span> <span class="n">y_original_dummy</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">splitPercentage</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_encoded</span><span class="p">,</span> <span class="n">y_encoded</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">splitPercentage</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_original</span><span class="p">,</span> <span class="n">y_original_dummy</span>
-    <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X_original</span><span class="p">,</span> <span class="n">y_original_dummy</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of X_train:&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;| Shape of y_train:&#39;</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of X_test:&#39;</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;| Shape of y_test:&#39;</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_encoded</span><span class="p">,</span> <span class="n">y_encoded</span>
+    <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X_encoded</span><span class="p">,</span> <span class="n">y_encoded</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X_train.shape: </span><span class="si">{}</span><span class="s2"> X_train.type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">X_train</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y_train.shape: </span><span class="si">{}</span><span class="s2"> y_train.type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X_test.shape: </span><span class="si">{}</span><span class="s2"> X_test.type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y_test.shape: </span><span class="si">{}</span><span class="s2"> y_test.type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
 </pre></div>
 
     </div>
@@ -13696,8 +13751,10 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Shape of X_train: (112, 4) | Shape of y_train: (112, 3)
-Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
+<pre>X_train.shape: (112, 4) X_train.type: &lt;class &#39;numpy.ndarray&#39;&gt;
+y_train.shape: (112, 3) y_train.type: &lt;class &#39;numpy.ndarray&#39;&gt;
+X_test.shape: (38, 4) X_test.type: &lt;class &#39;numpy.ndarray&#39;&gt;
+y_test.shape: (38, 3) y_test.type: &lt;class &#39;numpy.ndarray&#39;&gt;
 </pre>
 </div>
 </div>
@@ -13708,7 +13765,7 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 1 Load Data completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13728,7 +13785,7 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 2 Define Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13741,16 +13798,16 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the Keras model required for KerasClassifier</span>
-<span class="k">def</span> <span class="nf">create_cv_model</span><span class="p">():</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">model_kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">model_kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">model_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">model_optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">model_metrics</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">model</span>
+<span class="k">def</span> <span class="nf">create_default_model</span><span class="p">():</span>
+    <span class="n">default_model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">default_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">default_kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">default_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">default_kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+    <span class="n">default_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">default_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">default_optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">default_model</span>
 </pre></div>
 
     </div>
@@ -13760,11 +13817,11 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize the Keras model</span>
-<span class="n">cv_model</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">create_cv_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">model_epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">model_batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_model</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">create_default_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">default_epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">default_batches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13774,7 +13831,7 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 2 Define Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13794,7 +13851,7 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 3 Fit and Evaluate Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13807,15 +13864,19 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Fit and evaluate the Keras model using 10-fold cross validation</span>
-<span class="n">kfold</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">startTimeModule</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="c1"># Fit and evaluate the Keras model using 10-fold cross validation</span>
+<span class="n">kfold</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seedNum</span><span class="p">)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">cv_model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfold</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generating results using the metrics of&#39;</span><span class="p">,</span> <span class="n">model_metrics</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generating results using the metrics of&#39;</span><span class="p">,</span> <span class="n">default_metrics</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All cross-Validate results:&#39;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average cross-Validate results:&#39;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Baseline results [mean (std)]: </span><span class="si">%.2f%%</span><span class="s1"> (</span><span class="si">%.2f%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total time for performing cross-validation of the default model:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTimeModule</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13832,10 +13893,47 @@ Shape of X_test: (38, 4) | Shape of y_test: (38, 3)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Generating results using the metrics of [&#39;accuracy&#39;]
-All cross-Validate results: [1.         1.         0.90909091 1.         1.         1.
- 1.         1.         1.         0.90909091]
-Average cross-Validate results: 0.9818181829019025
+<pre>Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op Mul in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op Add in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarIsInitializedOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op LogicalNot in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op Assert in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op AssignVariableOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op Fill in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op AssignVariableOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op Reshape in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op VarHandleOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_742 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_19220 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_19988 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_38466 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op DestroyResourceOp in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_39234 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_57712 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_58480 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_76958 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_77726 in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op __inference_keras_scratch_graph_96204 in device /job:localhost/replica:0/task:0/device:CPU:0
+Generating results using the metrics of [&#39;accuracy&#39;]
+All cross-Validate results: [1.         0.95652175 1.         0.95454544 0.95454544]
+Baseline results [mean (std)]: 97.31% (2.20%)
+Total time for performing cross-validation of the default model: 0:00:44.751092
 </pre>
 </div>
 </div>
@@ -13846,7 +13944,7 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 3 Fit and Evaluate Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13866,7 +13964,7 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 4 Optimize Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -13879,16 +13977,16 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the Keras model required for KerasClassifier</span>
-<span class="k">def</span> <span class="nf">create_grid_model</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">kernel_init</span><span class="p">):</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">model_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">model_metrics</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">model</span>
+<span class="k">def</span> <span class="nf">create_customized_model</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">kernel_init</span><span class="p">):</span>
+    <span class="n">customized_model</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">customized_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">customized_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+    <span class="n">customized_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">default_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">customized_model</span>
 </pre></div>
 
     </div>
@@ -13898,15 +13996,17 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create model</span>
-<span class="n">grid_model</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">create_grid_model</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">startTimeModule</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="c1"># create model</span>
+<span class="n">grid_model</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">create_customized_model</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Perform grid search using different epochs, batch sizes, and optimizers</span>
 <span class="n">optimizer_grid</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">,</span> <span class="s1">&#39;adam&#39;</span><span class="p">]</span>
-<span class="n">init_grid</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Constant&#39;</span><span class="p">,</span> <span class="s1">&#39;RandomNormal&#39;</span><span class="p">,</span> <span class="s1">&#39;RandomUniform&#39;</span><span class="p">]</span>
+<span class="n">init_grid</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RandomNormal&#39;</span><span class="p">,</span> <span class="s1">&#39;glorot_normal&#39;</span><span class="p">,</span> <span class="s1">&#39;Orthogonal&#39;</span><span class="p">]</span>
 <span class="n">epoch_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
 <span class="n">batch_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
 <span class="n">param_grid</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer_grid</span><span class="p">,</span> <span class="n">kernel_init</span><span class="o">=</span><span class="n">init_grid</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epoch_grid</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_grid</span><span class="p">)</span>
@@ -13920,6 +14020,8 @@ Average cross-Validate results: 0.9818181829019025
 <span class="n">params</span> <span class="o">=</span> <span class="n">grid_result</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">mean</span><span class="p">,</span> <span class="n">stdev</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">stds</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> (</span><span class="si">%f</span><span class="s2">) with: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">stdev</span><span class="p">,</span> <span class="n">param</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total time for performing grid-search of the best parameters:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTimeModule</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13935,8 +14037,20 @@ Average cross-Validate results: 0.9818181829019025
     <div class="prompt"></div>
 
 
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op RandomStandardNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_search.py:813: DeprecationWarning: The default of the `iid` parameter will change from True to False in version 0.22 and will be removed in 0.24. This will change numeric results when test-set sizes are unequal.
+<pre>/usr/local/lib/python3.7/site-packages/sklearn/model_selection/_search.py:814: DeprecationWarning: The default of the `iid` parameter will change from True to False in version 0.22 and will be removed in 0.24. This will change numeric results when test-set sizes are unequal.
   DeprecationWarning)
 </pre>
 </div>
@@ -13948,61 +14062,63 @@ Average cross-Validate results: 0.9818181829019025
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Best: 0.973214 using {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.937500 (0.102346) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.875000 (0.164604) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.973214 (0.052691) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.883929 (0.129573) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.946429 (0.064444) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.973214 (0.035230) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.973214 (0.021964) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.866071 (0.164120) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.857143 (0.181623) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.937500 (0.044777) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.946429 (0.051337) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.955357 (0.068000) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.955357 (0.047905) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.955357 (0.055894) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.964286 (0.051226) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.821429 (0.176770) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.821429 (0.159727) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.857143 (0.077048) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.821429 (0.162248) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.857143 (0.160090) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.901786 (0.096188) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.919643 (0.032822) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.955357 (0.047905) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.276786 (0.067255) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Constant&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.955357 (0.055894) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.839286 (0.194059) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
-0.946429 (0.051337) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
-0.857143 (0.181623) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomUniform&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+<pre>Executing op __inference_keras_scratch_graph_96972 in device /job:localhost/replica:0/task:0/device:CPU:0
+Best: 0.991071 using {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.857143 (0.141608) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.857143 (0.223876) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.964286 (0.033530) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.866071 (0.125983) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.955357 (0.038967) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.964286 (0.032731) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.991071 (0.017564) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.919643 (0.071294) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.991071 (0.017564) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.964286 (0.032731) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.982143 (0.035127) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.982143 (0.035127) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.982143 (0.035127) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.964286 (0.032731) with: {&#39;batch_size&#39;: 5, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.919643 (0.097619) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.928571 (0.081330) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.901786 (0.135163) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.866071 (0.115076) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.883929 (0.128479) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.633929 (0.236861) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.928571 (0.102107) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.901786 (0.135163) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.946429 (0.033171) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.982143 (0.021390) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.973214 (0.034979) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.982143 (0.021390) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.982143 (0.035127) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.982143 (0.021390) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.982143 (0.021390) with: {&#39;batch_size&#39;: 10, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.794643 (0.156783) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.839286 (0.150534) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.714286 (0.256573) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.758929 (0.113688) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.732143 (0.137659) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.750000 (0.163015) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 100, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.928571 (0.045019) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.946429 (0.033171) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.794643 (0.131706) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.857143 (0.131261) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.776786 (0.273020) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.857143 (0.091977) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 150, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.919643 (0.118816) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.875000 (0.142976) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;RandomNormal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.928571 (0.053277) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.866071 (0.103874) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;glorot_normal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+0.901786 (0.115524) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}
+0.964286 (0.042779) with: {&#39;batch_size&#39;: 20, &#39;epochs&#39;: 200, &#39;kernel_init&#39;: &#39;Orthogonal&#39;, &#39;optimizer&#39;: &#39;adam&#39;}
+Total time for performing grid-search of the best parameters: 0:03:59.895336
 </pre>
 </div>
 </div>
@@ -14013,11 +14129,11 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_optimizer</span> <span class="o">=</span> <span class="s1">&#39;adam&#39;</span>
-<span class="n">best_kernel_init</span> <span class="o">=</span> <span class="s1">&#39;RandomNormal&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_optimizer</span> <span class="o">=</span> <span class="s1">&#39;rmsprop&#39;</span>
+<span class="n">best_kernel_init</span> <span class="o">=</span> <span class="s1">&#39;glorot_normal&#39;</span>
 <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">150</span>
 <span class="n">best_batch</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
@@ -14029,12 +14145,12 @@ Average cross-Validate results: 0.9818181829019025
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create the final model for evaluating the test dataset</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_grid_model</span><span class="p">(</span><span class="n">best_optimizer</span><span class="p">,</span> <span class="n">best_kernel_init</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">best_epoch</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">best_batch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">final_model</span> <span class="o">=</span> <span class="n">create_customized_model</span><span class="p">(</span><span class="n">best_optimizer</span><span class="p">,</span> <span class="n">best_kernel_init</span><span class="p">)</span>
+<span class="n">final_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">best_epoch</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">best_batch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14051,319 +14167,322 @@ Average cross-Validate results: 0.9818181829019025
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1/150
-112/112 [==============================] - 1s 10ms/step - loss: 1.1075 - acc: 0.0446
+<pre>Executing op TruncatedNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Executing op TruncatedNormal in device /job:localhost/replica:0/task:0/device:CPU:0
+Epoch 1/150
+Executing op __inference_keras_scratch_graph_115078 in device /job:localhost/replica:0/task:0/device:CPU:0
+112/112 [==============================] - 0s 2ms/step - loss: 1.4850 - accuracy: 0.3125
 Epoch 2/150
-112/112 [==============================] - 0s 534us/step - loss: 1.0949 - acc: 0.3125
+112/112 [==============================] - 0s 434us/step - loss: 1.2784 - accuracy: 0.3125
 Epoch 3/150
-112/112 [==============================] - 0s 528us/step - loss: 1.0872 - acc: 0.3125
+112/112 [==============================] - 0s 663us/step - loss: 1.1664 - accuracy: 0.2946
 Epoch 4/150
-112/112 [==============================] - 0s 515us/step - loss: 1.0799 - acc: 0.3125
+112/112 [==============================] - 0s 435us/step - loss: 1.1068 - accuracy: 0.1607
 Epoch 5/150
-112/112 [==============================] - 0s 541us/step - loss: 1.0691 - acc: 0.3125
+112/112 [==============================] - 0s 428us/step - loss: 1.0580 - accuracy: 0.1696
 Epoch 6/150
-112/112 [==============================] - 0s 496us/step - loss: 1.0578 - acc: 0.3125
+112/112 [==============================] - 0s 429us/step - loss: 1.0246 - accuracy: 0.3571
 Epoch 7/150
-112/112 [==============================] - 0s 477us/step - loss: 1.0452 - acc: 0.3482
+112/112 [==============================] - 0s 409us/step - loss: 0.9981 - accuracy: 0.3571
 Epoch 8/150
-112/112 [==============================] - 0s 483us/step - loss: 1.0306 - acc: 0.3125
+112/112 [==============================] - 0s 409us/step - loss: 0.9768 - accuracy: 0.3571
 Epoch 9/150
-112/112 [==============================] - 0s 479us/step - loss: 1.0135 - acc: 0.4196
+112/112 [==============================] - 0s 438us/step - loss: 0.9532 - accuracy: 0.3571
 Epoch 10/150
-112/112 [==============================] - 0s 483us/step - loss: 0.9950 - acc: 0.6071
+112/112 [==============================] - 0s 420us/step - loss: 0.9311 - accuracy: 0.3571
 Epoch 11/150
-112/112 [==============================] - 0s 477us/step - loss: 0.9746 - acc: 0.6429
+112/112 [==============================] - 0s 432us/step - loss: 0.9096 - accuracy: 0.3571
 Epoch 12/150
-112/112 [==============================] - 0s 478us/step - loss: 0.9485 - acc: 0.6429
+112/112 [==============================] - 0s 429us/step - loss: 0.8840 - accuracy: 0.3661
 Epoch 13/150
-112/112 [==============================] - 0s 474us/step - loss: 0.9229 - acc: 0.6429
+112/112 [==============================] - 0s 423us/step - loss: 0.8425 - accuracy: 0.5714
 Epoch 14/150
-112/112 [==============================] - 0s 518us/step - loss: 0.8943 - acc: 0.6429
+112/112 [==============================] - 0s 422us/step - loss: 0.8076 - accuracy: 0.6786
 Epoch 15/150
-112/112 [==============================] - 0s 494us/step - loss: 0.8652 - acc: 0.6429
+112/112 [==============================] - 0s 427us/step - loss: 0.7870 - accuracy: 0.6607
 Epoch 16/150
-112/112 [==============================] - 0s 486us/step - loss: 0.8311 - acc: 0.6429
+112/112 [==============================] - 0s 411us/step - loss: 0.7684 - accuracy: 0.6964
 Epoch 17/150
-112/112 [==============================] - 0s 517us/step - loss: 0.7997 - acc: 0.6429
+112/112 [==============================] - 0s 406us/step - loss: 0.7524 - accuracy: 0.7054
 Epoch 18/150
-112/112 [==============================] - 0s 494us/step - loss: 0.7655 - acc: 0.6518
+112/112 [==============================] - 0s 413us/step - loss: 0.7362 - accuracy: 0.7411
 Epoch 19/150
-112/112 [==============================] - 0s 484us/step - loss: 0.7345 - acc: 0.6607
+112/112 [==============================] - 0s 404us/step - loss: 0.7203 - accuracy: 0.7411
 Epoch 20/150
-112/112 [==============================] - 0s 526us/step - loss: 0.7063 - acc: 0.6964
+112/112 [==============================] - 0s 437us/step - loss: 0.7065 - accuracy: 0.7946
 Epoch 21/150
-112/112 [==============================] - 0s 473us/step - loss: 0.6773 - acc: 0.7054
+112/112 [==============================] - 0s 447us/step - loss: 0.6916 - accuracy: 0.7500
 Epoch 22/150
-112/112 [==============================] - 0s 492us/step - loss: 0.6520 - acc: 0.7500
+112/112 [==============================] - 0s 435us/step - loss: 0.6769 - accuracy: 0.7857
 Epoch 23/150
-112/112 [==============================] - 0s 534us/step - loss: 0.6284 - acc: 0.7857
+112/112 [==============================] - 0s 428us/step - loss: 0.6641 - accuracy: 0.7768
 Epoch 24/150
-112/112 [==============================] - 0s 488us/step - loss: 0.6069 - acc: 0.8482
+112/112 [==============================] - 0s 420us/step - loss: 0.6514 - accuracy: 0.7857
 Epoch 25/150
-112/112 [==============================] - 0s 480us/step - loss: 0.5868 - acc: 0.8571
+112/112 [==============================] - 0s 423us/step - loss: 0.6407 - accuracy: 0.8214
 Epoch 26/150
-112/112 [==============================] - 0s 483us/step - loss: 0.5692 - acc: 0.8661
+112/112 [==============================] - 0s 422us/step - loss: 0.6283 - accuracy: 0.8125
 Epoch 27/150
-112/112 [==============================] - 0s 488us/step - loss: 0.5527 - acc: 0.9018
+112/112 [==============================] - 0s 425us/step - loss: 0.6187 - accuracy: 0.8304
 Epoch 28/150
-112/112 [==============================] - 0s 525us/step - loss: 0.5375 - acc: 0.9554
+112/112 [==============================] - 0s 416us/step - loss: 0.6068 - accuracy: 0.8750
 Epoch 29/150
-112/112 [==============================] - 0s 478us/step - loss: 0.5233 - acc: 0.9375
+112/112 [==============================] - 0s 415us/step - loss: 0.5956 - accuracy: 0.8393
 Epoch 30/150
-112/112 [==============================] - 0s 484us/step - loss: 0.5108 - acc: 0.9107
+112/112 [==============================] - 0s 473us/step - loss: 0.5854 - accuracy: 0.8661
 Epoch 31/150
-112/112 [==============================] - 0s 522us/step - loss: 0.4994 - acc: 0.9018
+112/112 [==============================] - 0s 420us/step - loss: 0.5748 - accuracy: 0.8393
 Epoch 32/150
-112/112 [==============================] - 0s 490us/step - loss: 0.4871 - acc: 0.9554
+112/112 [==============================] - 0s 411us/step - loss: 0.5658 - accuracy: 0.8839
 Epoch 33/150
-112/112 [==============================] - 0s 482us/step - loss: 0.4758 - acc: 0.9554
+112/112 [==============================] - 0s 418us/step - loss: 0.5569 - accuracy: 0.8839
 Epoch 34/150
-112/112 [==============================] - 0s 540us/step - loss: 0.4666 - acc: 0.9554
+112/112 [==============================] - 0s 415us/step - loss: 0.5495 - accuracy: 0.8571
 Epoch 35/150
-112/112 [==============================] - 0s 486us/step - loss: 0.4563 - acc: 0.9464
+112/112 [==============================] - 0s 415us/step - loss: 0.5395 - accuracy: 0.8839
 Epoch 36/150
-112/112 [==============================] - 0s 478us/step - loss: 0.4455 - acc: 0.9554
+112/112 [==============================] - 0s 426us/step - loss: 0.5321 - accuracy: 0.8929
 Epoch 37/150
-112/112 [==============================] - 0s 521us/step - loss: 0.4376 - acc: 0.9643
+112/112 [==============================] - 0s 392us/step - loss: 0.5216 - accuracy: 0.9018
 Epoch 38/150
-112/112 [==============================] - 0s 484us/step - loss: 0.4299 - acc: 0.9643
+112/112 [==============================] - 0s 420us/step - loss: 0.5142 - accuracy: 0.8929
 Epoch 39/150
-112/112 [==============================] - 0s 478us/step - loss: 0.4229 - acc: 0.9643
+112/112 [==============================] - 0s 418us/step - loss: 0.5053 - accuracy: 0.9107
 Epoch 40/150
-112/112 [==============================] - 0s 533us/step - loss: 0.4151 - acc: 0.9554
+112/112 [==============================] - 0s 420us/step - loss: 0.4974 - accuracy: 0.9018
 Epoch 41/150
-112/112 [==============================] - 0s 524us/step - loss: 0.4062 - acc: 0.9554
+112/112 [==============================] - 0s 431us/step - loss: 0.4875 - accuracy: 0.9286
 Epoch 42/150
-112/112 [==============================] - 0s 518us/step - loss: 0.4009 - acc: 0.9554
+112/112 [==============================] - 0s 428us/step - loss: 0.4816 - accuracy: 0.9464
 Epoch 43/150
-112/112 [==============================] - 0s 490us/step - loss: 0.3900 - acc: 0.9643
+112/112 [==============================] - 0s 409us/step - loss: 0.4705 - accuracy: 0.9464
 Epoch 44/150
-112/112 [==============================] - 0s 485us/step - loss: 0.3851 - acc: 0.9821
+112/112 [==============================] - 0s 425us/step - loss: 0.4626 - accuracy: 0.9464
 Epoch 45/150
-112/112 [==============================] - 0s 488us/step - loss: 0.3781 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.4538 - accuracy: 0.9464
 Epoch 46/150
-112/112 [==============================] - 0s 516us/step - loss: 0.3712 - acc: 0.9643
+112/112 [==============================] - 0s 420us/step - loss: 0.4446 - accuracy: 0.9464
 Epoch 47/150
-112/112 [==============================] - 0s 502us/step - loss: 0.3652 - acc: 0.9643
+112/112 [==============================] - 0s 420us/step - loss: 0.4371 - accuracy: 0.9464
 Epoch 48/150
-112/112 [==============================] - 0s 528us/step - loss: 0.3587 - acc: 0.9643
+112/112 [==============================] - 0s 406us/step - loss: 0.4284 - accuracy: 0.9464
 Epoch 49/150
-112/112 [==============================] - 0s 481us/step - loss: 0.3541 - acc: 0.9554
+112/112 [==============================] - 0s 418us/step - loss: 0.4196 - accuracy: 0.9464
 Epoch 50/150
-112/112 [==============================] - 0s 522us/step - loss: 0.3478 - acc: 0.9643
+112/112 [==============================] - 0s 473us/step - loss: 0.4088 - accuracy: 0.9554
 Epoch 51/150
-112/112 [==============================] - 0s 523us/step - loss: 0.3419 - acc: 0.9643
+112/112 [==============================] - 0s 417us/step - loss: 0.4007 - accuracy: 0.9464
 Epoch 52/150
-112/112 [==============================] - 0s 491us/step - loss: 0.3359 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.3901 - accuracy: 0.9554
 Epoch 53/150
-112/112 [==============================] - 0s 504us/step - loss: 0.3298 - acc: 0.9643
+112/112 [==============================] - 0s 431us/step - loss: 0.3821 - accuracy: 0.9375
 Epoch 54/150
-112/112 [==============================] - 0s 496us/step - loss: 0.3260 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.3738 - accuracy: 0.9554
 Epoch 55/150
-112/112 [==============================] - 0s 525us/step - loss: 0.3220 - acc: 0.9732
+112/112 [==============================] - 0s 539us/step - loss: 0.3652 - accuracy: 0.9554
 Epoch 56/150
-112/112 [==============================] - 0s 521us/step - loss: 0.3149 - acc: 0.9732
+112/112 [==============================] - 0s 459us/step - loss: 0.3553 - accuracy: 0.9643
 Epoch 57/150
-112/112 [==============================] - 0s 536us/step - loss: 0.3098 - acc: 0.9643
+112/112 [==============================] - 0s 407us/step - loss: 0.3472 - accuracy: 0.9554
 Epoch 58/150
-112/112 [==============================] - 0s 526us/step - loss: 0.3058 - acc: 0.9643
+112/112 [==============================] - 0s 438us/step - loss: 0.3341 - accuracy: 0.9554
 Epoch 59/150
-112/112 [==============================] - 0s 488us/step - loss: 0.3000 - acc: 0.9643
+112/112 [==============================] - 0s 404us/step - loss: 0.3295 - accuracy: 0.9643
 Epoch 60/150
-112/112 [==============================] - 0s 484us/step - loss: 0.2961 - acc: 0.9643
+112/112 [==============================] - 0s 419us/step - loss: 0.3190 - accuracy: 0.9643
 Epoch 61/150
-112/112 [==============================] - 0s 524us/step - loss: 0.2925 - acc: 0.9821
+112/112 [==============================] - 0s 427us/step - loss: 0.3115 - accuracy: 0.9643
 Epoch 62/150
-112/112 [==============================] - 0s 481us/step - loss: 0.2863 - acc: 0.9911
+112/112 [==============================] - 0s 429us/step - loss: 0.3017 - accuracy: 0.9732
 Epoch 63/150
-112/112 [==============================] - 0s 483us/step - loss: 0.2821 - acc: 0.9643
+112/112 [==============================] - 0s 415us/step - loss: 0.2947 - accuracy: 0.9643
 Epoch 64/150
-112/112 [==============================] - 0s 488us/step - loss: 0.2790 - acc: 0.9643
+112/112 [==============================] - 0s 466us/step - loss: 0.2875 - accuracy: 0.9643
 Epoch 65/150
-112/112 [==============================] - 0s 484us/step - loss: 0.2743 - acc: 0.9643
+112/112 [==============================] - 0s 410us/step - loss: 0.2781 - accuracy: 0.9643
 Epoch 66/150
-112/112 [==============================] - 0s 488us/step - loss: 0.2705 - acc: 0.9821
+112/112 [==============================] - 0s 403us/step - loss: 0.2726 - accuracy: 0.9732
 Epoch 67/150
-112/112 [==============================] - 0s 479us/step - loss: 0.2670 - acc: 0.9643
+112/112 [==============================] - 0s 413us/step - loss: 0.2664 - accuracy: 0.9821
 Epoch 68/150
-112/112 [==============================] - 0s 486us/step - loss: 0.2618 - acc: 0.9643
+112/112 [==============================] - 0s 418us/step - loss: 0.2594 - accuracy: 0.9732
 Epoch 69/150
-112/112 [==============================] - 0s 490us/step - loss: 0.2580 - acc: 0.9643
+112/112 [==============================] - 0s 415us/step - loss: 0.2522 - accuracy: 0.9732
 Epoch 70/150
-112/112 [==============================] - 0s 483us/step - loss: 0.2551 - acc: 0.9732
+112/112 [==============================] - 0s 592us/step - loss: 0.2469 - accuracy: 0.9643
 Epoch 71/150
-112/112 [==============================] - 0s 475us/step - loss: 0.2506 - acc: 0.9643
+112/112 [==============================] - 0s 469us/step - loss: 0.2385 - accuracy: 0.9732
 Epoch 72/150
-112/112 [==============================] - 0s 518us/step - loss: 0.2476 - acc: 0.9643
+112/112 [==============================] - 0s 432us/step - loss: 0.2355 - accuracy: 0.9643
 Epoch 73/150
-112/112 [==============================] - 0s 482us/step - loss: 0.2438 - acc: 0.9643
+112/112 [==============================] - 0s 415us/step - loss: 0.2286 - accuracy: 0.9732
 Epoch 74/150
-112/112 [==============================] - 0s 485us/step - loss: 0.2421 - acc: 0.9643
+112/112 [==============================] - 0s 428us/step - loss: 0.2232 - accuracy: 0.9732
 Epoch 75/150
-112/112 [==============================] - 0s 500us/step - loss: 0.2422 - acc: 0.9554
+112/112 [==============================] - 0s 413us/step - loss: 0.2191 - accuracy: 0.9643
 Epoch 76/150
-112/112 [==============================] - 0s 484us/step - loss: 0.2354 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.2129 - accuracy: 0.9821
 Epoch 77/150
-112/112 [==============================] - 0s 520us/step - loss: 0.2314 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.2106 - accuracy: 0.9732
 Epoch 78/150
-112/112 [==============================] - 0s 528us/step - loss: 0.2282 - acc: 0.9821
+112/112 [==============================] - 0s 418us/step - loss: 0.2037 - accuracy: 0.9643
 Epoch 79/150
-112/112 [==============================] - 0s 530us/step - loss: 0.2249 - acc: 0.9911
+112/112 [==============================] - 0s 431us/step - loss: 0.1994 - accuracy: 0.9732
 Epoch 80/150
-112/112 [==============================] - 0s 487us/step - loss: 0.2214 - acc: 0.9821
+112/112 [==============================] - 0s 432us/step - loss: 0.1963 - accuracy: 0.9554
 Epoch 81/150
-112/112 [==============================] - 0s 478us/step - loss: 0.2195 - acc: 0.9643
+112/112 [==============================] - 0s 450us/step - loss: 0.1922 - accuracy: 0.9732
 Epoch 82/150
-112/112 [==============================] - 0s 482us/step - loss: 0.2168 - acc: 0.9643
+112/112 [==============================] - 0s 416us/step - loss: 0.1859 - accuracy: 0.9821
 Epoch 83/150
-112/112 [==============================] - 0s 487us/step - loss: 0.2137 - acc: 0.9821
+112/112 [==============================] - 0s 418us/step - loss: 0.1835 - accuracy: 0.9732
 Epoch 84/150
-112/112 [==============================] - 0s 528us/step - loss: 0.2104 - acc: 0.9732
+112/112 [==============================] - 0s 425us/step - loss: 0.1801 - accuracy: 0.9911
 Epoch 85/150
-112/112 [==============================] - 0s 535us/step - loss: 0.2077 - acc: 0.9643
+112/112 [==============================] - 0s 445us/step - loss: 0.1789 - accuracy: 0.9643
 Epoch 86/150
-112/112 [==============================] - 0s 493us/step - loss: 0.2069 - acc: 0.9643
+112/112 [==============================] - 0s 419us/step - loss: 0.1734 - accuracy: 0.9732
 Epoch 87/150
-112/112 [==============================] - 0s 529us/step - loss: 0.2024 - acc: 0.9643
+112/112 [==============================] - 0s 392us/step - loss: 0.1722 - accuracy: 0.9643
 Epoch 88/150
-112/112 [==============================] - 0s 523us/step - loss: 0.2008 - acc: 0.9821
+112/112 [==============================] - 0s 415us/step - loss: 0.1700 - accuracy: 0.9732
 Epoch 89/150
-112/112 [==============================] - 0s 485us/step - loss: 0.1987 - acc: 0.9643
+112/112 [==============================] - 0s 474us/step - loss: 0.1655 - accuracy: 0.9732
 Epoch 90/150
-112/112 [==============================] - 0s 484us/step - loss: 0.1961 - acc: 0.9643
+112/112 [==============================] - 0s 423us/step - loss: 0.1645 - accuracy: 0.9643
 Epoch 91/150
-112/112 [==============================] - 0s 487us/step - loss: 0.1947 - acc: 0.9643
+112/112 [==============================] - 0s 422us/step - loss: 0.1609 - accuracy: 0.9643
 Epoch 92/150
-112/112 [==============================] - 0s 497us/step - loss: 0.1903 - acc: 0.9643
+112/112 [==============================] - 0s 416us/step - loss: 0.1582 - accuracy: 0.9643
 Epoch 93/150
-112/112 [==============================] - 0s 473us/step - loss: 0.1921 - acc: 0.9732
+112/112 [==============================] - 0s 411us/step - loss: 0.1570 - accuracy: 0.9732
 Epoch 94/150
-112/112 [==============================] - 0s 484us/step - loss: 0.1879 - acc: 0.9732
+112/112 [==============================] - 0s 448us/step - loss: 0.1556 - accuracy: 0.9643
 Epoch 95/150
-112/112 [==============================] - 0s 476us/step - loss: 0.1875 - acc: 0.9643
+112/112 [==============================] - 0s 426us/step - loss: 0.1530 - accuracy: 0.9732
 Epoch 96/150
-112/112 [==============================] - 0s 547us/step - loss: 0.1835 - acc: 0.9643
+112/112 [==============================] - 0s 421us/step - loss: 0.1529 - accuracy: 0.9732
 Epoch 97/150
-112/112 [==============================] - 0s 473us/step - loss: 0.1848 - acc: 0.9643
+112/112 [==============================] - 0s 516us/step - loss: 0.1482 - accuracy: 0.9732
 Epoch 98/150
-112/112 [==============================] - 0s 484us/step - loss: 0.1801 - acc: 0.9643
+112/112 [==============================] - 0s 448us/step - loss: 0.1485 - accuracy: 0.9821
 Epoch 99/150
-112/112 [==============================] - 0s 519us/step - loss: 0.1780 - acc: 0.9643
+112/112 [==============================] - 0s 436us/step - loss: 0.1468 - accuracy: 0.9732
 Epoch 100/150
-112/112 [==============================] - 0s 490us/step - loss: 0.1753 - acc: 0.9643
+112/112 [==============================] - 0s 429us/step - loss: 0.1433 - accuracy: 0.9821
 Epoch 101/150
-112/112 [==============================] - 0s 514us/step - loss: 0.1737 - acc: 0.9732
+112/112 [==============================] - 0s 422us/step - loss: 0.1440 - accuracy: 0.9732
 Epoch 102/150
-112/112 [==============================] - 0s 513us/step - loss: 0.1720 - acc: 0.9643
+112/112 [==============================] - 0s 407us/step - loss: 0.1419 - accuracy: 0.9732
 Epoch 103/150
-112/112 [==============================] - 0s 492us/step - loss: 0.1721 - acc: 0.9643
+112/112 [==============================] - 0s 414us/step - loss: 0.1410 - accuracy: 0.9821
 Epoch 104/150
-112/112 [==============================] - 0s 480us/step - loss: 0.1704 - acc: 0.9821
+112/112 [==============================] - 0s 430us/step - loss: 0.1375 - accuracy: 0.9821
 Epoch 105/150
-112/112 [==============================] - 0s 492us/step - loss: 0.1683 - acc: 0.9643
+112/112 [==============================] - 0s 412us/step - loss: 0.1378 - accuracy: 0.9732
 Epoch 106/150
-112/112 [==============================] - 0s 482us/step - loss: 0.1647 - acc: 0.9732
+112/112 [==============================] - 0s 416us/step - loss: 0.1342 - accuracy: 0.9732
 Epoch 107/150
-112/112 [==============================] - 0s 487us/step - loss: 0.1665 - acc: 0.9643
+112/112 [==============================] - 0s 407us/step - loss: 0.1342 - accuracy: 0.9732
 Epoch 108/150
-112/112 [==============================] - 0s 517us/step - loss: 0.1611 - acc: 0.9643
+112/112 [==============================] - 0s 430us/step - loss: 0.1322 - accuracy: 0.9821
 Epoch 109/150
-112/112 [==============================] - 0s 485us/step - loss: 0.1610 - acc: 0.9911
+112/112 [==============================] - 0s 429us/step - loss: 0.1310 - accuracy: 0.9821
 Epoch 110/150
-112/112 [==============================] - 0s 485us/step - loss: 0.1585 - acc: 0.9643
+112/112 [==============================] - 0s 417us/step - loss: 0.1288 - accuracy: 0.9911
 Epoch 111/150
-112/112 [==============================] - 0s 488us/step - loss: 0.1576 - acc: 0.9643
+112/112 [==============================] - 0s 420us/step - loss: 0.1280 - accuracy: 0.9732
 Epoch 112/150
-112/112 [==============================] - 0s 477us/step - loss: 0.1599 - acc: 0.9821
+112/112 [==============================] - 0s 454us/step - loss: 0.1257 - accuracy: 0.9821
 Epoch 113/150
-112/112 [==============================] - 0s 486us/step - loss: 0.1546 - acc: 0.9643
+112/112 [==============================] - 0s 442us/step - loss: 0.1253 - accuracy: 0.9821
 Epoch 114/150
-112/112 [==============================] - 0s 501us/step - loss: 0.1533 - acc: 0.9732
+112/112 [==============================] - 0s 431us/step - loss: 0.1258 - accuracy: 0.9732
 Epoch 115/150
-112/112 [==============================] - 0s 485us/step - loss: 0.1515 - acc: 0.9821
+112/112 [==============================] - 0s 436us/step - loss: 0.1227 - accuracy: 0.9821
 Epoch 116/150
-112/112 [==============================] - 0s 490us/step - loss: 0.1498 - acc: 0.9911
+112/112 [==============================] - 0s 425us/step - loss: 0.1227 - accuracy: 0.9732
 Epoch 117/150
-112/112 [==============================] - 0s 491us/step - loss: 0.1493 - acc: 0.9732
+112/112 [==============================] - 0s 411us/step - loss: 0.1205 - accuracy: 0.9643
 Epoch 118/150
-112/112 [==============================] - 0s 492us/step - loss: 0.1481 - acc: 0.9643
+112/112 [==============================] - 0s 417us/step - loss: 0.1206 - accuracy: 0.9732
 Epoch 119/150
-112/112 [==============================] - 0s 530us/step - loss: 0.1458 - acc: 0.9643
+112/112 [==============================] - 0s 403us/step - loss: 0.1185 - accuracy: 0.9821
 Epoch 120/150
-112/112 [==============================] - 0s 518us/step - loss: 0.1446 - acc: 0.9911
+112/112 [==============================] - 0s 378us/step - loss: 0.1188 - accuracy: 0.9911
 Epoch 121/150
-112/112 [==============================] - 0s 515us/step - loss: 0.1435 - acc: 0.9821
+112/112 [==============================] - 0s 409us/step - loss: 0.1164 - accuracy: 0.9821
 Epoch 122/150
-112/112 [==============================] - 0s 519us/step - loss: 0.1433 - acc: 0.9643
+112/112 [==============================] - 0s 431us/step - loss: 0.1129 - accuracy: 0.9821
 Epoch 123/150
-112/112 [==============================] - 0s 521us/step - loss: 0.1413 - acc: 0.9643
+112/112 [==============================] - 0s 416us/step - loss: 0.1151 - accuracy: 0.9732
 Epoch 124/150
-112/112 [==============================] - 0s 489us/step - loss: 0.1406 - acc: 0.9821
+112/112 [==============================] - 0s 429us/step - loss: 0.1124 - accuracy: 0.9911
 Epoch 125/150
-112/112 [==============================] - 0s 492us/step - loss: 0.1387 - acc: 0.9732
+112/112 [==============================] - 0s 422us/step - loss: 0.1094 - accuracy: 0.9821
 Epoch 126/150
-112/112 [==============================] - 0s 497us/step - loss: 0.1382 - acc: 0.9911
+112/112 [==============================] - 0s 443us/step - loss: 0.1135 - accuracy: 0.9821
 Epoch 127/150
-112/112 [==============================] - 0s 474us/step - loss: 0.1383 - acc: 0.9643
+112/112 [==============================] - 0s 474us/step - loss: 0.1103 - accuracy: 0.9821
 Epoch 128/150
-112/112 [==============================] - 0s 492us/step - loss: 0.1346 - acc: 0.9732
+112/112 [==============================] - 0s 429us/step - loss: 0.1108 - accuracy: 0.9821
 Epoch 129/150
-112/112 [==============================] - 0s 477us/step - loss: 0.1357 - acc: 0.9821
+112/112 [==============================] - 0s 418us/step - loss: 0.1094 - accuracy: 0.9732
 Epoch 130/150
-112/112 [==============================] - 0s 482us/step - loss: 0.1341 - acc: 0.9821
+112/112 [==============================] - 0s 417us/step - loss: 0.1093 - accuracy: 0.9732
 Epoch 131/150
-112/112 [==============================] - 0s 478us/step - loss: 0.1317 - acc: 0.9732
+112/112 [==============================] - 0s 414us/step - loss: 0.1063 - accuracy: 0.9911
 Epoch 132/150
-112/112 [==============================] - 0s 501us/step - loss: 0.1315 - acc: 0.9732
+112/112 [==============================] - 0s 424us/step - loss: 0.1074 - accuracy: 0.9732
 Epoch 133/150
-112/112 [==============================] - 0s 477us/step - loss: 0.1302 - acc: 0.9643
+112/112 [==============================] - 0s 415us/step - loss: 0.1061 - accuracy: 0.9732
 Epoch 134/150
-112/112 [==============================] - 0s 481us/step - loss: 0.1297 - acc: 0.9821
+112/112 [==============================] - 0s 420us/step - loss: 0.1056 - accuracy: 0.9821
 Epoch 135/150
-112/112 [==============================] - 0s 489us/step - loss: 0.1279 - acc: 0.9821
+112/112 [==============================] - 0s 415us/step - loss: 0.1039 - accuracy: 0.9821
 Epoch 136/150
-112/112 [==============================] - 0s 486us/step - loss: 0.1280 - acc: 0.9821
+112/112 [==============================] - 0s 379us/step - loss: 0.1054 - accuracy: 0.9732
 Epoch 137/150
-112/112 [==============================] - 0s 553us/step - loss: 0.1263 - acc: 0.9732
+112/112 [==============================] - 0s 365us/step - loss: 0.1026 - accuracy: 0.9732
 Epoch 138/150
-112/112 [==============================] - 0s 506us/step - loss: 0.1256 - acc: 0.9732
+112/112 [==============================] - 0s 416us/step - loss: 0.1033 - accuracy: 0.9732
 Epoch 139/150
-112/112 [==============================] - 0s 523us/step - loss: 0.1247 - acc: 0.9732
+112/112 [==============================] - 0s 400us/step - loss: 0.1030 - accuracy: 0.9732
 Epoch 140/150
-112/112 [==============================] - 0s 479us/step - loss: 0.1260 - acc: 0.9821
+112/112 [==============================] - 0s 423us/step - loss: 0.1000 - accuracy: 0.9911
 Epoch 141/150
-112/112 [==============================] - 0s 478us/step - loss: 0.1223 - acc: 0.9732
+112/112 [==============================] - 0s 424us/step - loss: 0.1016 - accuracy: 0.9732
 Epoch 142/150
-112/112 [==============================] - 0s 491us/step - loss: 0.1232 - acc: 0.9911
+112/112 [==============================] - 0s 496us/step - loss: 0.0998 - accuracy: 0.9732
 Epoch 143/150
-112/112 [==============================] - 0s 515us/step - loss: 0.1226 - acc: 0.9732
+112/112 [==============================] - 0s 412us/step - loss: 0.1002 - accuracy: 0.9732
 Epoch 144/150
-112/112 [==============================] - 0s 490us/step - loss: 0.1189 - acc: 0.9732
+112/112 [==============================] - 0s 419us/step - loss: 0.0981 - accuracy: 0.9911
 Epoch 145/150
-112/112 [==============================] - 0s 528us/step - loss: 0.1204 - acc: 0.9911
+112/112 [==============================] - 0s 411us/step - loss: 0.0979 - accuracy: 0.9732
 Epoch 146/150
-112/112 [==============================] - 0s 482us/step - loss: 0.1188 - acc: 0.9821
+112/112 [==============================] - 0s 389us/step - loss: 0.0985 - accuracy: 0.9732
 Epoch 147/150
-112/112 [==============================] - 0s 539us/step - loss: 0.1175 - acc: 0.9643
+112/112 [==============================] - 0s 424us/step - loss: 0.0966 - accuracy: 0.9821
 Epoch 148/150
-112/112 [==============================] - 0s 481us/step - loss: 0.1242 - acc: 0.9821
+112/112 [==============================] - 0s 415us/step - loss: 0.0964 - accuracy: 0.9732
 Epoch 149/150
-112/112 [==============================] - 0s 493us/step - loss: 0.1171 - acc: 0.9643
+112/112 [==============================] - 0s 371us/step - loss: 0.0970 - accuracy: 0.9821
 Epoch 150/150
-112/112 [==============================] - 0s 551us/step - loss: 0.1168 - acc: 0.9643
+112/112 [==============================] - 0s 384us/step - loss: 0.0947 - accuracy: 0.9732
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[88]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;keras.callbacks.History at 0x7f7aec3614a8&gt;</pre>
+<pre>&lt;keras.callbacks.callbacks.History at 0x7f7eb4295b10&gt;</pre>
 </div>
 
 </div>
@@ -14374,11 +14493,11 @@ Epoch 150/150
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Display a summary of the final model</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 </pre></div>
 
     </div>
@@ -14395,12 +14514,13 @@ Epoch 150/150
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>_________________________________________________________________
+<pre>Model: &#34;sequential_7&#34;
+_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-dense_47 (Dense)             (None, 8)                 40        
+dense_13 (Dense)             (None, 8)                 40        
 _________________________________________________________________
-dense_48 (Dense)             (None, 3)                 27        
+dense_14 (Dense)             (None, 3)                 27        
 =================================================================
 Total params: 67
 Trainable params: 67
@@ -14417,13 +14537,13 @@ None
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the Keras model on previously unseen data</span>
-<span class="n">scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">final_model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">final_model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -14440,11 +14560,12 @@ None
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>38/38 [==============================] - 0s 9ms/step
+<pre>Executing op __inference_keras_scratch_graph_132706 in device /job:localhost/replica:0/task:0/device:CPU:0
+38/38 [==============================] - 0s 2ms/step
 
-acc: 97.37%
+accuracy: 97.37%
 
-loss: 12.24%
+loss: 12.27%
 </pre>
 </div>
 </div>
@@ -14455,7 +14576,7 @@ loss: 12.24%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 4 Optimize Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -14475,7 +14596,7 @@ loss: 12.24%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 5 Finalize Model has begun! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -14488,12 +14609,15 @@ loss: 12.24%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[93]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make class predictions with the model</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_original</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Summarize the first 20 cases</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data item #</span><span class="si">%d</span><span class="s1"> predicted to be </span><span class="si">%s</span><span class="s1"> (expected </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">]]),</span> <span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">])])))</span>
 </pre></div>
 
     </div>
@@ -14510,11 +14634,27 @@ loss: 12.24%
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 1
- 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
- 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- 2 2]
+<pre>Executing op __inference_keras_scratch_graph_132736 in device /job:localhost/replica:0/task:0/device:CPU:0
+Data item #0 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #1 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #2 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-virginica&#39;])
+Data item #3 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-virginica&#39;])
+Data item #4 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-virginica&#39;])
+Data item #5 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #6 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #7 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-virginica&#39;])
+Data item #8 predicted to be [&#39;Iris-virginica&#39;] (expected [&#39;Iris-virginica&#39;])
+Data item #9 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #10 predicted to be [&#39;Iris-setosa&#39;] (expected [&#39;Iris-setosa&#39;])
+Data item #11 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #12 predicted to be [&#39;Iris-setosa&#39;] (expected [&#39;Iris-setosa&#39;])
+Data item #13 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #14 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #15 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #16 predicted to be [&#39;Iris-versicolor&#39;] (expected [&#39;Iris-versicolor&#39;])
+Data item #17 predicted to be [&#39;Iris-setosa&#39;] (expected [&#39;Iris-setosa&#39;])
+Data item #18 predicted to be [&#39;Iris-setosa&#39;] (expected [&#39;Iris-setosa&#39;])
+Data item #19 predicted to be [&#39;Iris-setosa&#39;] (expected [&#39;Iris-setosa&#39;])
 </pre>
 </div>
 </div>
@@ -14525,7 +14665,7 @@ loss: 12.24%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[94]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">notifyStatus</span><span class="p">):</span> <span class="n">email_notify</span><span class="p">(</span><span class="s2">&quot;Phase 5 Finalize Model completed! &quot;</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %B </span><span class="si">%d</span><span class="s1">, %Y %I:%M:%S %p&#39;</span><span class="p">))</span>
@@ -14538,7 +14678,7 @@ loss: 12.24%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[95]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Total time for the script:&#39;</span><span class="p">,(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTimeScript</span><span class="p">))</span>
@@ -14558,7 +14698,7 @@ loss: 12.24%
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Total time for the script: 0:12:33.389036
+<pre>Total time for the script: 0:04:59.489797
 </pre>
 </div>
 </div>
