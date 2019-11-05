@@ -1,9 +1,10 @@
 FROM python:3.7-buster
-LABEL com.dainesanalytics.python.version=v1.5
+LABEL com.dainesanalytics.python.version=v1.6
 EXPOSE 8080
 RUN pip install --upgrade pip
 RUN pip3 install --prefer-binary numpy scipy matplotlib ipython sympy pandas jupyterlab
 RUN pip3 install --prefer-binary PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
+RUN pip3 install --prefer-binary deap update_checker tqdm stopit tpot
 RUN pip3 install --prefer-binary seaborn pmdarima lxml html5lib requests beautifulsoup4
 RUN pip3 install --prefer-binary tensorflow tensorflow-gpu keras
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
