@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 23 #####
+##### Docker and Git commands cheatsheet version 24 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
@@ -38,7 +38,7 @@ docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyt
 
 /opt/conda/bin/jupyter notebook password  # Run server at least once first!
 
-jupyter nbconvert --to html SCRIPT_NAME.ipynb
+/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
 docker cp mycontainer:/home/anaconda/under-development/<folder>/<file>.ipynb ./
 
@@ -76,7 +76,7 @@ $ sudo systemctl start docker
 
 $ sudo systemctl enable docker
 
-$ sudo docker run hello-world
+$ docker image ls | docker run hello-world
 
 $ sudo groupadd docker # Might not be necessary - Check first
 $ sudo usermod -aG docker $USER # Might not be necessary - Check first
