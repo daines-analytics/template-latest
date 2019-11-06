@@ -6,10 +6,10 @@ RUN apt-get install -y nodejs npm
 RUN pip install --upgrade pip
 RUN pip install --prefer-binary numpy scipy matplotlib ipython sympy pandas jupyterlab
 RUN pip install --prefer-binary PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
-RUN pip install --prefer-binary deap update_checker tqdm stopit tpot npm nodejs
+RUN pip install --prefer-binary deap update_checker tqdm stopit ipywidgets tpot nodejs npm
 RUN pip install --prefer-binary seaborn pmdarima lxml html5lib requests beautifulsoup4
 RUN pip install --prefer-binary tensorflow tensorflow-gpu keras
-RUN jupyter nbextension enable --py widgetsnbextension
+RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
