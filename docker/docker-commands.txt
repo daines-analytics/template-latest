@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 24 #####
+##### Docker and Git commands cheatsheet version 25 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
@@ -7,10 +7,12 @@ scp -i ~/.ssh/da-ml-keypair.pem conda_env.txt ubuntu@<instance IP>:/home/ubuntu
 
 
 ##### Container prep commands #####
-scp conda_env.txt docker@10.0.5.72:/home/docker
-scp .Renviron docker@10.0.5.73:/home/docker
-scp id_rsa docker@10.0.5.72:/home/docker
-scp Dockerfile docker@10.0.5.72:/home/docker
+scp conda_env.txt docker@10.0.5.??:/home/docker
+scp .Renviron docker@10.0.5.??:/home/docker
+scp id_rsa docker@10.0.5.??:/home/docker
+scp Dockerfile-anaconda.txt docker@10.0.5.??:/home/docker
+scp Dockerfile-pythonml.txt docker@10.0.5.??:/home/docker
+scp Dockerfile-rstudio.txt docker@10.0.5.??:/home/docker
 
 ssh -T git@github.com
 
@@ -76,10 +78,11 @@ $ sudo systemctl start docker
 
 $ sudo systemctl enable docker
 
-$ docker image ls | docker run hello-world
+$ docker image ls
 
 $ sudo groupadd docker # Might not be necessary - Check first
 $ sudo usermod -aG docker $USER # Might not be necessary - Check first
+$ docker run hello-world - Check first
 
 
 ##### Docker REMOVAL ONLY #####
