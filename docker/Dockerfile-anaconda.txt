@@ -5,7 +5,7 @@ RUN /opt/conda/bin/conda update -y anaconda
 RUN /opt/conda/bin/pip install xgboost pmdarima deap update_checker tqdm stopit tpot
 RUN /opt/conda/bin/conda install -y -c conda-forge imbalanced-learn
 RUN /opt/conda/bin/conda install -y PyMySQL nodejs tensorflow tensorflow-gpu keras
-RUN /opt/conda/bin/jupyter nbextension enable --py widgetsnbextension
+RUN /opt/conda/bin/jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN /opt/conda/bin/jupyter labextension install @jupyter-widgets/jupyterlab-manager
 RUN useradd -m -d /home/anaconda -s /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
