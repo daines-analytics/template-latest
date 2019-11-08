@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 25 #####
+##### Docker and Git commands cheatsheet version 26 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
@@ -65,6 +65,10 @@ jupyter notebook password  # Run server at least once first!
 jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
 docker cp mycontainer:/home/pythonml/under-development/<folder>/<file>.ipynb ./
+
+
+##### AWS Ubuntu AMI commands #####
+jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/home/ubuntu
 
 
 ##### Docker CE Installation on CentOS #####
