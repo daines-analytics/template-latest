@@ -1,9 +1,9 @@
-##### Docker and Git commands cheatsheet version 28 #####
+##### Docker and Git commands cheatsheet version 29 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
 ssh -i ~/.ssh/da-ml-keypair.pem -L localhost:8888:localhost:8888 ubuntu@<instance IP>
-scp -i ~/.ssh/da-ml-keypair.pem conda_env.txt ubuntu@<instance IP>:/home/ubuntu
+scp -i ~/.ssh/da-ml-keypair.pem C:\Users\user_hhds7y1\docker_setup\anaconda\conda_env.txt ubuntu@<instance IP>:/home/ubuntu
 
 
 ##### Container prep commands #####
@@ -23,6 +23,8 @@ git clone git@github.com:daines-analytics/template-latest.git
 git clone git@github.com:daines-analytics/time-series-projects.git
 git clone git@github.com:daines-analytics/under-development.git
 git clone git@github.com:daines-analytics/web-scraping-projects.git
+
+git clone https://github.com/daines-analytics/under-development.git
 
 git fetch --all ; git reset --hard origin/master
 
@@ -119,7 +121,7 @@ jupyter notebook
 
 ##### AWS EC2 Setup for TensorFlow on Ubuntu
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 # Add NVIDIA package repositories
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-repo-ubuntu1804_10.0.130-1_amd64.deb
@@ -132,7 +134,7 @@ sudo apt-get update
 
 # Install NVIDIA driver
 # sudo apt-get install --no-install-recommends nvidia-driver-418
-sudo apt-get install nvidia-driver-440
+sudo apt-get install -y nvidia-driver-440
 # Reboot. Check that GPUs are visible using the command: nvidia-smi
 
 # Install development and runtime libraries (~4GB)
@@ -140,16 +142,14 @@ sudo apt-get install nvidia-driver-440
 #     cuda-10-0 \
 #     libcudnn7=7.6.2.24-1+cuda10.0  \
 #     libcudnn7-dev=7.6.2.24-1+cuda10.0
-sudo apt-get install cuda-10-2
-
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get install -y cuda-10-0 libcudnn7 libcudnn7-dev
 
 # sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 # sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
 # sudo update-alternatives --set python /usr/bin/python3.6
 
-sudo apt install -y python3-pip nodejs npm
+sudo apt install -y nodejs npm
+sudo apt install -y python3-pip
 sudo pip3 install --upgrade pip
 sudo pip install numpy scipy matplotlib ipython sympy pandas jupyterlab
 sudo pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
@@ -158,3 +158,4 @@ sudo pip install seaborn pmdarima lxml html5lib requests beautifulsoup4
 sudo pip install tensorflow tensorflow-gpu keras
 sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
 sudo jupyter labextension install @jupyter-widgets/jupyterlab-manager
+jupyter lab --no-browser
