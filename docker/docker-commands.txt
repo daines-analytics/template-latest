@@ -1,7 +1,8 @@
-##### Docker and Git commands cheatsheet version 29 #####
+##### Docker and Git commands cheatsheet version 30 #####
 
 ##### SSH connection commands #####
-ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35-170-217-54
+ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
+ssh -i ~/.ssh/DA-KP-Bastion.pem ec2-user@35.170.217.54
 ssh -i ~/.ssh/da-ml-keypair.pem -L localhost:8888:localhost:8888 ubuntu@<instance IP>
 scp -i ~/.ssh/da-ml-keypair.pem C:\Users\user_hhds7y1\docker_setup\anaconda\conda_env.txt ubuntu@<instance IP>:/home/ubuntu
 
