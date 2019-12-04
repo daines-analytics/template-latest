@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 30 #####
+##### Docker and Git commands cheatsheet version 31 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -136,6 +136,7 @@ sudo apt-get update
 # Install NVIDIA driver
 # sudo apt-get install --no-install-recommends nvidia-driver-418
 sudo apt-get install -y nvidia-driver-440
+
 # Reboot. Check that GPUs are visible using the command: nvidia-smi
 
 # Install development and runtime libraries (~4GB)
@@ -149,14 +150,10 @@ sudo apt-get install -y cuda-10-0 libcudnn7 libcudnn7-dev
 # sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
 # sudo update-alternatives --set python /usr/bin/python3.6
 
-sudo apt install -y nodejs npm
 sudo apt install -y python3-pip
 sudo pip3 install --upgrade pip
-sudo pip install numpy scipy matplotlib ipython sympy pandas jupyterlab
-sudo pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
-sudo pip install deap update_checker tqdm stopit ipywidgets tpot nodejs npm
-sudo pip install seaborn pmdarima lxml html5lib requests beautifulsoup4
-sudo pip install tensorflow tensorflow-gpu keras
-sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
-sudo jupyter labextension install @jupyter-widgets/jupyterlab-manager
+sudo pip3 install numpy scipy matplotlib ipython sympy pandas jupyterlab
+sudo pip3 install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
+sudo pip3 install seaborn pmdarima lxml html5lib requests beautifulsoup4
+sudo pip3 install tensorflow tensorflow-gpu keras
 jupyter lab --no-browser
