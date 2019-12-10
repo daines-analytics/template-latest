@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 31 #####
+##### Docker and Git commands cheatsheet version 32 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -72,6 +72,14 @@ docker cp mycontainer:/home/pythonml/under-development/<folder>/<file>.ipynb ./
 
 ##### AWS Ubuntu AMI commands #####
 jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/home/ubuntu
+
+
+##### FastAI AWS Deep Learning AMI (Ubuntu) commands #####
+$ git clone https://github.com/fastai/course-v3
+$ conda update conda
+$ conda install -c pytorch -c fastai fastai pytorch
+$ cd course-v3/nbs/dl1
+$ jupyter notebook
 
 
 ##### Docker CE Installation on CentOS #####
