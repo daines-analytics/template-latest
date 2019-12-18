@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 32 #####
+##### Docker and Git commands cheatsheet version 33 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -23,6 +23,7 @@ git clone git@github.com:daines-analytics/tabular-data-projects.git
 git clone git@github.com:daines-analytics/template-latest.git
 git clone git@github.com:daines-analytics/time-series-projects.git
 git clone git@github.com:daines-analytics/under-development.git
+git clone https://github.com/daines-analytics/under-development.git
 git clone git@github.com:daines-analytics/web-scraping-projects.git
 
 git clone https://github.com/daines-analytics/under-development.git
