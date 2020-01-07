@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 33 #####
+##### Docker and Git commands cheatsheet version 34 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -32,6 +32,9 @@ git fetch --all ; git reset --hard origin/master
 
 openssl pkcs8 -in <KEYFILENAME> -nocrypt -topk8 -outform DER | openssl sha1 -c
 
+split -b 25M -d -a 3 train.zip train.zip.
+cat train.zip.{000..020} > train-new.zip
+diff --speed-large-files train.zip train-new.zip
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
 
