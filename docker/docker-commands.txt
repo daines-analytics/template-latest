@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 34 #####
+##### Docker and Git commands cheatsheet version 35 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -39,9 +39,9 @@ cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
 
 ##### Anaconda container commands #####
-docker image build -t anaconda/nonroot:v2 .
+docker image build -t anaconda/nonroot:v3 .
 
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v2 /bin/bash
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v3 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
@@ -61,9 +61,9 @@ docker cp mycontainer:/home/rstudio/under-development/<folder>/<file>.Rmd ./
 
 
 ##### Python container commands #####
-docker image build -t pythonml/nonroot:v1 .
+docker image build -t pythonml/nonroot:v2 .
 
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server pythonml/nonroot:v1 /bin/bash
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server pythonml/nonroot:v2 /bin/bash
 
 jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
 
