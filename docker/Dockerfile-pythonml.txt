@@ -1,11 +1,11 @@
 FROM python:3.7-buster
-LABEL com.dainesanalytics.python.version=v2.0
+LABEL com.dainesanalytics.python.version=v2.1
 EXPOSE 8080
 RUN apt-get update
 RUN pip install --upgrade pip
 RUN pip install numpy scipy matplotlib ipython sympy pandas jupyterlab
-RUN pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels
-RUN pip install seaborn pmdarima lxml html5lib requests beautifulsoup4 netCDF4 selenium
+RUN pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels pmdarima
+RUN pip install seaborn lxml html5lib requests beautifulsoup4 netCDF4 selenium pillow
 RUN pip install tensorflow tensorflow-gpu keras
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
