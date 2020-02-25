@@ -1,9 +1,9 @@
 FROM python:3.7-buster
-LABEL com.dainesanalytics.python.version=v2.1
+LABEL com.dainesanalytics.python.version=v2.2
 EXPOSE 8080
 RUN apt-get update
 RUN pip install --upgrade pip
-RUN pip install numpy scipy matplotlib ipython sympy pandas jupyterlab
+RUN pip install numpy scipy matplotlib ipython sympy pandas jupyterlab pandas-datareader
 RUN pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels pmdarima
 RUN pip install seaborn lxml html5lib requests beautifulsoup4 netCDF4 selenium pillow
 RUN pip install tensorflow tensorflow-gpu keras
