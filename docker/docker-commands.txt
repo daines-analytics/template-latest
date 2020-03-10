@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 35 #####
+##### Docker and Git commands cheatsheet version 36 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -17,16 +17,15 @@ scp Dockerfile-rstudio.txt docker@10.0.5.??:/home/docker
 
 ssh -T git@github.com
 
+git clone git@github.com:daines-analytics/development-2020.git
+git clone https://github.com/daines-analytics/development-2020.git
+
 git clone git@github.com:daines-analytics/datasets-public.git
 git clone git@github.com:daines-analytics/deep-learning-projects.git
 git clone git@github.com:daines-analytics/tabular-data-projects.git
 git clone git@github.com:daines-analytics/template-latest.git
 git clone git@github.com:daines-analytics/time-series-projects.git
-git clone git@github.com:daines-analytics/under-development.git
-git clone https://github.com/daines-analytics/under-development.git
 git clone git@github.com:daines-analytics/web-scraping-projects.git
-
-git clone https://github.com/daines-analytics/under-development.git
 
 git fetch --all ; git reset --hard origin/master
 
@@ -36,6 +35,20 @@ split -b 25M -d -a 3 train.zip train.zip.
 cat train.zip.{000..020} > train-new.zip
 diff --speed-large-files train.zip train-new.zip
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
+
+
+##### Python container commands #####
+docker image build -t pythonml/nonroot:v2 .
+
+docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server pythonml/nonroot:v2 /bin/bash
+
+jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
+
+jupyter notebook password  # Run server at least once first!
+
+jupyter nbconvert --to html SCRIPT_NAME.ipynb
+
+docker cp mycontainer:/home/pythonml/under-development/<folder>/<file>.ipynb ./
 
 
 ##### Anaconda container commands #####
@@ -58,20 +71,6 @@ docker image build -t rstudio/nonroot:v2 .
 docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v2
 
 docker cp mycontainer:/home/rstudio/under-development/<folder>/<file>.Rmd ./
-
-
-##### Python container commands #####
-docker image build -t pythonml/nonroot:v2 .
-
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server pythonml/nonroot:v2 /bin/bash
-
-jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
-
-jupyter notebook password  # Run server at least once first!
-
-jupyter nbconvert --to html SCRIPT_NAME.ipynb
-
-docker cp mycontainer:/home/pythonml/under-development/<folder>/<file>.ipynb ./
 
 
 ##### AWS Ubuntu AMI commands #####
