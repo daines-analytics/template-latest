@@ -12,7 +12,7 @@ scp C:\Users\user_hhds7y1\docker_setup\anaconda\conda_env.txt docker@10.0.5.??:/
 scp C:\Users\user_hhds7y1\docker_setup\anaconda\Dockerfile docker@10.0.5.??:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\anaconda\id_rsa docker@10.0.5.??:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\rstudio\.Renviron docker@10.0.5.??:/home/docker
-scp C:\Users\user_hhds7y1\docker_setup\quantfin\dotenv.txt docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\quantfin.env docker@10.0.5.??:/home/docker
 scp Dockerfile-anaconda.txt docker@10.0.5.??:/home/docker
 scp Dockerfile-pythonml.txt docker@10.0.5.??:/home/docker
 scp Dockerfile-rstudio.txt docker@10.0.5.??:/home/docker
