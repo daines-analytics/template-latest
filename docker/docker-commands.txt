@@ -79,7 +79,7 @@ docker cp mycontainer:/home/rstudio/<Git-parent-directory>/<project-folder>/<fil
 ##### Quantfin container commands #####
 docker image build -t quantfin/nonroot:v1 .
 
-docker container run --rm -it --env-file dotenv.txt -p 8080:8080 --name quantfin-server quantfin/nonroot:v1 /bin/bash
+docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantfin-server quantfin/nonroot:v1 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/quantfin
 
