@@ -1,12 +1,12 @@
 FROM python:3.7-buster
-LABEL com.dainesanalytics.python.version=v2.2
+LABEL com.dainesanalytics.python.version=v2.3
 EXPOSE 8080
 RUN apt-get update
-RUN pip install --upgrade pip
-RUN pip install numpy scipy matplotlib ipython sympy pandas jupyterlab pandas-datareader
-RUN pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels pmdarima
-RUN pip install seaborn lxml html5lib requests beautifulsoup4 netCDF4 selenium pillow
-RUN pip install tensorflow tensorflow-gpu keras
+RUN pip install numpy scipy matplotlib ipython sympy pandas jupyterlab pandas-datareader seaborn
+RUN pip install PyMySQL imbalanced-learn xgboost scikit-learn statsmodels pmdarima netCDF4
+RUN pip install lxml html5lib requests beautifulsoup4 selenium
+RUN pip install pillow tensorflow
+RUN pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
 COPY --chown=pythonml:pythonml id_rsa /home/pythonml/.ssh
