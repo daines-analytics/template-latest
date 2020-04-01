@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 37 #####
+##### Docker and Git commands cheatsheet version 38 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -8,14 +8,18 @@ scp -i ~/.ssh/da-ml-keypair.pem C:\Users\user_hhds7y1\docker_setup\anaconda\cond
 
 
 ##### Container prep commands #####
-scp C:\Users\user_hhds7y1\docker_setup\anaconda\conda_env.txt docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\anaconda\anaconda.env docker@10.0.5.??:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\anaconda\Dockerfile docker@10.0.5.??:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\anaconda\id_rsa docker@10.0.5.??:/home/docker
-scp C:\Users\user_hhds7y1\docker_setup\rstudio\.Renviron docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\pythonml\pythonml.env docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\pythonml\Dockerfile docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\pythonml\id_rsa docker@10.0.5.??:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\quantfin\quantfin.env docker@10.0.5.??:/home/docker
-scp Dockerfile-anaconda.txt docker@10.0.5.??:/home/docker
-scp Dockerfile-pythonml.txt docker@10.0.5.??:/home/docker
-scp Dockerfile-rstudio.txt docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\Dockerfile docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\id_rsa docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\rstudio\.Renviron docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\rstudio\Dockerfile docker@10.0.5.??:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\rstudio\id_rsa docker@10.0.5.??:/home/docker
 
 ssh -T git@github.com
 
@@ -43,7 +47,7 @@ cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 ##### Python container commands #####
 docker image build -t pythonml/nonroot:v2 .
 
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server pythonml/nonroot:v2 /bin/bash
+docker container run --rm -it --env-file pythonml.env -p 8080:8080 --name pythonml-server pythonml/nonroot:v2 /bin/bash
 
 jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
 
@@ -57,7 +61,7 @@ docker cp mycontainer:/home/pythonml/<Git-parent-directory>/<project-folder>/<fi
 ##### Anaconda container commands #####
 docker image build -t anaconda/nonroot:v3 .
 
-docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyter-server anaconda/nonroot:v3 /bin/bash
+docker container run --rm -it --env-file anaconda.env -p 8080:8080 --name anaconda-server anaconda/nonroot:v3 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
@@ -65,15 +69,7 @@ docker container run --rm -it --env-file conda_env.txt -p 8080:8080 --name jupyt
 
 /opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
-docker cp mycontainer:/home/quantfin/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
-
-
-##### RStudio container commands #####
-docker image build -t rstudio/nonroot:v2 .
-
-docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v2
-
-docker cp mycontainer:/home/rstudio/<Git-parent-directory>/<project-folder>/<file>.Rmd ./
+docker cp mycontainer:/home/anaconda/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
 
 
 ##### Quantfin container commands #####
@@ -90,6 +86,14 @@ docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantf
 docker cp mycontainer:/home/quantfin/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
 
 
+##### RStudio container commands #####
+docker image build -t rstudio/nonroot:v2 .
+
+docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v2
+
+docker cp mycontainer:/home/rstudio/<Git-parent-directory>/<project-folder>/<file>.Rmd ./
+
+
 ##### AWS Ubuntu AMI commands #####
 jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/home/ubuntu
 
@@ -103,6 +107,8 @@ $ jupyter notebook
 
 
 ##### Docker CE Installation on CentOS #####
+$ sudo yum update -y
+
 $ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 
 $ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
