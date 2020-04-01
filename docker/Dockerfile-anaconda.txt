@@ -1,7 +1,7 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.anaconda.version=v3.1
+LABEL com.dainesanalytics.anaconda.version=v3.2
 EXPOSE 8080
-RUN /opt/conda/bin/conda update -y anaconda
+# RUN /opt/conda/bin/conda update -y anaconda
 RUN /opt/conda/bin/pip install xgboost pmdarima deap update_checker tqdm stopit tpot
 RUN /opt/conda/bin/conda install -y -c conda-forge imbalanced-learn
 RUN /opt/conda/bin/conda install -y PyMySQL ipywidgets nodejs selenium pandas-datareader
