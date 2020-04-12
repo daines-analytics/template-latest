@@ -1,7 +1,6 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.anaconda.version=v3.2
+LABEL com.dainesanalytics.anaconda.version=v3.3
 EXPOSE 8080
-# RUN /opt/conda/bin/conda update -y anaconda
 RUN /opt/conda/bin/pip install xgboost pmdarima deap update_checker tqdm stopit tpot
 RUN /opt/conda/bin/conda install -y -c conda-forge imbalanced-learn
 RUN /opt/conda/bin/conda install -y PyMySQL ipywidgets nodejs selenium pandas-datareader
@@ -9,7 +8,7 @@ RUN /opt/conda/bin/jupyter nbextension enable --py --sys-prefix widgetsnbextensi
 RUN /opt/conda/bin/jupyter labextension install @jupyter-widgets/jupyterlab-manager
 RUN useradd -m -d /home/anaconda -s /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
-COPY --chown=anaconda:anaconda id_rsa /home/anaconda/.ssh
+COPY --chown=anaconda:anaconda id_rsa_docker /home/anaconda/.ssh/id_rsa
 RUN chmod 700 /home/anaconda/.ssh/id_rsa
 USER anaconda
 RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
