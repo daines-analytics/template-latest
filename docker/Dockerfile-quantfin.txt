@@ -1,8 +1,7 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.quantfin.version=v1.3
+LABEL com.dainesanalytics.quantfin.version=v1.4
 EXPOSE 8080
-# RUN /opt/conda/bin/conda update -y anaconda
-RUN /opt/conda/bin/pip install xgboost pmdarima yfinance quandl alpha_vantage edgar
+RUN /opt/conda/bin/pip install pmdarima yfinance quandl alpha_vantage edgar python-dotenv
 RUN /opt/conda/bin/conda install -y PyMySQL selenium pandas-datareader
 RUN useradd -m -d /home/quantfin -s /bin/bash quantfin
 RUN mkdir /home/quantfin/.ssh && chown quantfin:quantfin /home/quantfin/.ssh
