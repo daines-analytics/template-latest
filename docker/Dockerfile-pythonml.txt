@@ -1,10 +1,9 @@
 FROM python:3.7-buster
-LABEL com.dainesanalytics.pythonml.version=v2.5
+LABEL com.dainesanalytics.pythonml.version=v2.6
 EXPOSE 8080
-RUN apt-get update
 RUN pip install numpy scipy matplotlib ipython sympy pandas scikit-learn jupyterlab pandas-datareader seaborn
 RUN pip install PyMySQL imbalanced-learn xgboost statsmodels pmdarima netCDF4
-RUN pip install lxml html5lib requests beautifulsoup4 selenium
+RUN pip install lxml html5lib requests beautifulsoup4 selenium python-dotenv
 RUN pip install pillow tensorflow
 RUN pip install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
