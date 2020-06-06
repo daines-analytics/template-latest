@@ -47,6 +47,22 @@ diff --speed-large-files train.zip train-new.zip
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
 
+##### Quantfin container commands #####
+docker image build -t quantfin/nonroot:v1 .
+
+docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantfin-server quantfin/nonroot:v1 /bin/bash
+
+/opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/quantfin
+
+/opt/conda/bin/jupyter notebook password  # Run server at least once first!
+
+/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
+
+docker cp quantfin-server:/home/quantfin/development-2020/py-algotrading-sma-crossover-grid-search/ ./
+
+scp docker@10.0.4.255:/home/docker/py-algotrading-sma-crossover-grid-search/*.txt ./
+
+
 ##### Python container commands #####
 docker image build -t pythonml/nonroot:v2 .
 
@@ -73,20 +89,6 @@ docker container run --rm -it --env-file anaconda.env -p 8080:8080 --name anacon
 /opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
 docker cp mycontainer:/home/anaconda/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
-
-
-##### Quantfin container commands #####
-docker image build -t quantfin/nonroot:v1 .
-
-docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantfin-server quantfin/nonroot:v1 /bin/bash
-
-/opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/quantfin
-
-/opt/conda/bin/jupyter notebook password  # Run server at least once first!
-
-/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
-
-docker cp mycontainer:/home/quantfin/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
 
 
 ##### RStudio container commands #####
