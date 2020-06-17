@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 39 #####
+##### Docker and Git commands cheatsheet version 41 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
