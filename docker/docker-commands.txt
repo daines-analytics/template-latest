@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 41 #####
+##### Docker and Git commands cheatsheet version 42 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -58,9 +58,9 @@ docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantf
 
 /opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
-docker cp quantfin-server:/home/quantfin/development-2020/py-algotrading-sma-crossover-grid-search/ ./
+docker cp quantfin-server:/home/quantfin/quant-finance-projects/daily-stocks-report/ ./
 
-scp docker@10.0.4.255:/home/docker/py-algotrading-sma-crossover-grid-search/*.txt ./
+scp docker@10.0.4.255:/home/docker/daily-stocks-report/*.html ./
 
 
 ##### Python container commands #####
