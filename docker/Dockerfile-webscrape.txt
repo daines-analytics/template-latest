@@ -1,0 +1,17 @@
+FROM continuumio/anaconda3:latest
+LABEL com.dainesanalytics.webscrape.version=v1.0
+EXPOSE 8080
+RUN apt update
+RUN apt install -y firefox-esr
+RUN /opt/conda/bin/pip install boto3
+RUN /opt/conda/bin/conda install -y PyMySQL selenium
+RUN cd /usr/local/bin
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
+RUN tar -xvzf geckodriver-v0.27.0-linux64.tar.gz
+RUN useradd -m -d /home/webscrape -s /bin/bash webscrape
+RUN mkdir /home/webscrape/.ssh && chown webscrape:webscrape /home/webscrape/.ssh
+COPY --chown=webscrape:webscrape id_rsa_docker /home/webscrape/.ssh/id_rsa
+RUN chmod 700 /home/webscrape/.ssh/id_rsa
+USER webscrape
+RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+WORKDIR /home/webscrape
