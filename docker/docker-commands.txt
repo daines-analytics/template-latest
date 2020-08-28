@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 42 #####
+##### Docker and Git commands cheatsheet version 43 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -8,17 +8,21 @@ scp -i ~/.ssh/da-ml-keypair.pem C:\Users\user_hhds7y1\docker_setup\anaconda\cond
 
 
 ##### Container prep commands #####
-scp C:\Users\user_hhds7y1\docker_setup\anaconda\anaconda.env docker@10.0.5.2:/home/docker
-scp C:\Users\user_hhds7y1\docker_setup\anaconda\Dockerfile-anaconda.txt docker@10.0.5.2:/home/docker/Dockerfile
-scp C:\Users\user_hhds7y1\docker_setup\anaconda\id_rsa_docker docker@10.0.5.2:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\quantfin.env docker@10.0.4.255:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\Dockerfile-quantfin.txt docker@10.0.4.255:/home/docker/Dockerfile
+scp C:\Users\user_hhds7y1\docker_setup\quantfin\id_rsa_docker docker@10.0.4.255:/home/docker
 
 scp C:\Users\user_hhds7y1\docker_setup\pythonml\pythonml.env docker@10.0.5.0:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\pythonml\Dockerfile-pythonml.txt docker@10.0.5.0:/home/docker/Dockerfile
 scp C:\Users\user_hhds7y1\docker_setup\pythonml\id_rsa_docker docker@10.0.5.0:/home/docker
 
-scp C:\Users\user_hhds7y1\docker_setup\quantfin\quantfin.env docker@10.0.4.255:/home/docker
-scp C:\Users\user_hhds7y1\docker_setup\quantfin\Dockerfile-quantfin.txt docker@10.0.4.255:/home/docker/Dockerfile
-scp C:\Users\user_hhds7y1\docker_setup\quantfin\id_rsa_docker docker@10.0.4.255:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\anaconda\anaconda.env docker@10.0.5.2:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\anaconda\Dockerfile-anaconda.txt docker@10.0.5.2:/home/docker/Dockerfile
+scp C:\Users\user_hhds7y1\docker_setup\anaconda\id_rsa_docker docker@10.0.5.2:/home/docker
+
+scp C:\Users\user_hhds7y1\docker_setup\webscrape\webscrape.env docker@10.0.6.53:/home/docker
+scp C:\Users\user_hhds7y1\docker_setup\webscrape\Dockerfile-webscrape.txt docker@10.0.6.53:/home/docker/Dockerfile
+scp C:\Users\user_hhds7y1\docker_setup\webscrape\id_rsa_docker docker@10.0.6.53:/home/docker
 
 scp C:\Users\user_hhds7y1\docker_setup\rstudio\.Renviron docker@10.0.5.3:/home/docker
 scp C:\Users\user_hhds7y1\docker_setup\rstudio\Dockerfile-rstudio.txt docker@10.0.5.3:/home/docker/Dockerfile
@@ -89,6 +93,18 @@ docker container run --rm -it --env-file anaconda.env -p 8080:8080 --name anacon
 /opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
 
 docker cp mycontainer:/home/anaconda/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
+
+
+##### Webscrape container commands #####
+docker image build -t webscrape/nonroot:v1 .
+
+docker container run --rm -it --env-file webscrape.env -p 8080:8080 --name webscrape-server webscrape/nonroot:v1 /bin/bash
+
+jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/webscrape
+
+/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
+
+docker cp mycontainer:/home/webscrape/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
 
 
 ##### RStudio container commands #####
