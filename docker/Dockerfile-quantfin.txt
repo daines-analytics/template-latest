@@ -1,8 +1,8 @@
 FROM continuumio/anaconda3:latest
-LABEL com.dainesanalytics.quantfin.version=v1.5
+LABEL com.dainesanalytics.quantfin.version=v1.6
 EXPOSE 8080
 RUN /opt/conda/bin/pip install pmdarima yfinance quandl alpha_vantage edgar python-dotenv boto3
-RUN /opt/conda/bin/conda install -y PyMySQL selenium pandas-datareader
+RUN /opt/conda/bin/conda install -y PyMySQL pandas-datareader
 RUN useradd -m -d /home/quantfin -s /bin/bash quantfin
 RUN mkdir /home/quantfin/.ssh && chown quantfin:quantfin /home/quantfin/.ssh
 COPY --chown=quantfin:quantfin id_rsa_docker /home/quantfin/.ssh/id_rsa
