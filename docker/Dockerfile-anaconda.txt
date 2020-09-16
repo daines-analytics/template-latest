@@ -2,7 +2,6 @@ FROM continuumio/anaconda3:latest
 LABEL com.dainesanalytics.anaconda.version=v3.5
 EXPOSE 8080
 RUN /opt/conda/bin/pip install xgboost pmdarima boto3
-RUN /opt/conda/bin/conda install -y -c conda-forge imbalanced-learn
 RUN /opt/conda/bin/conda install -y PyMySQL pandas-datareader
 RUN useradd -m -d /home/anaconda -s /bin/bash anaconda
 RUN mkdir /home/anaconda/.ssh && chown anaconda:anaconda /home/anaconda/.ssh
