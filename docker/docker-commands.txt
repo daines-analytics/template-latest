@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 43 #####
+##### Docker and Git commands cheatsheet version 44 #####
 
 ##### SSH connection commands #####
 ssh -i C:\Users\david\.ssh\DA-KP-Bastion.pem ec2-user@35.170.217.54
@@ -43,8 +43,6 @@ git clone git@github.com:daines-analytics/web-scraping-projects.git
 
 git fetch --all ; git reset --hard origin/master
 
-openssl pkcs8 -in <KEYFILENAME> -nocrypt -topk8 -outform DER | openssl sha1 -c
-
 split -b 25M -d -a 3 train.zip train.zip.
 cat train.zip.{000..020} > train-new.zip
 diff --speed-large-files train.zip train-new.zip
@@ -67,7 +65,7 @@ docker cp quantfin-server:/home/quantfin/quant-finance-projects/daily-stocks-rep
 scp docker@10.0.4.255:/home/docker/daily-stocks-report/*.html ./
 
 
-##### Python container commands #####
+##### PythonML container commands #####
 docker image build -t pythonml/nonroot:v2 .
 
 docker container run --rm -it --env-file pythonml.env -p 8080:8080 --name pythonml-server pythonml/nonroot:v2 /bin/bash
