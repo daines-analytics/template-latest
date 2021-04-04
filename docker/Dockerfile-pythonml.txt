@@ -1,12 +1,12 @@
 FROM python:3.8-buster
-LABEL com.dainesanalytics.pythonml.version=v2.10
+LABEL com.dainesanalytics.pythonml.version=v2.11
 EXPOSE 8080
 RUN python3 -m pip install numpy scipy matplotlib ipython sympy pandas scikit-learn jupyterlab seaborn nltk gensim
 RUN python3 -m pip install PyMySQL imbalanced-learn xgboost tpot python-dotenv boto3
-RUN python3 -m pip install tensorflow
+RUN python3 -m pip install tensorflow tensorflow-addons
 RUN python3 -m pip install git+https://github.com/keras-team/keras-tuner.git
 RUN python3 -m pip install autokeras
-RUN python3 -m pip install torch==1.7.0+cpu torchvision==0.8.1+cpu torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+RUN python3 -m pip install pip install torch==1.8.1+cpu torchvision==0.9.1+cpu torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
 RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
 COPY --chown=pythonml:pythonml id_rsa_docker /home/pythonml/.ssh/id_rsa
