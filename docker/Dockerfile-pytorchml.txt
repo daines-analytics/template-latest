@@ -1,0 +1,13 @@
+FROM python:3.8-buster
+LABEL com.dainesanalytics.pytorchml.version=v1.0
+EXPOSE 8080
+RUN python3 -m pip install numpy scipy matplotlib ipython sympy pandas scikit-learn jupyterlab seaborn
+RUN python3 -m pip install python-dotenv boto3
+RUN python3 -m pip install torch==1.8.1+cpu torchvision==0.9.1+cpu torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+RUN useradd -m -d /home/pytorchml -s /bin/bash pytorchml
+RUN mkdir /home/pytorchml/.ssh && chown pytorchml:pytorchml /home/pytorchml/.ssh
+COPY --chown=pytorchml:pytorchml id_rsa_docker /home/pytorchml/.ssh/id_rsa
+RUN chmod 700 /home/pytorchml/.ssh/id_rsa
+USER pytorchml
+RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+WORKDIR /home/pytorchml
