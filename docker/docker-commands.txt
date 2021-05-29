@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 47 #####
+##### Docker and Git commands cheatsheet version 48 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
@@ -8,25 +8,25 @@ scp -i ~/.ssh/daines-west-keypair.pem <File Path/Name> ubuntu@<instance IP>:/hom
 ##### Container prep commands #####
 $ mkdir container # Off the /home/docker directory
 
-scp /c/Users/user_hhds7y1/docker_setup/quantfin/quantfin.env docker@quantfinx:/home/docker/container
-scp /c/Users/user_hhds7y1/docker_setup/quantfin/Dockerfile-quantfin.txt docker@quantfinx:/home/docker/container/Dockerfile
-scp /c/Users/user_hhds7y1/docker_setup/quantfin/id_rsa_docker docker@quantfinx:/home/docker/container
+scp /c/Users/<user name>/docker_setup/quantfin/quantfin.env docker@quantfinx:/home/docker/container
+scp /c/Users/<user name>/docker_setup/quantfin/Dockerfile-quantfin.txt docker@quantfinx:/home/docker/container/Dockerfile
+scp /c/Users/<user name>/docker_setup/quantfin/id_rsa_docker docker@quantfinx:/home/docker/container
 
-scp /c/Users/user_hhds7y1/docker_setup/pythonml/pythonml.env docker@pythonmlx:/home/docker/container
-scp /c/Users/user_hhds7y1/docker_setup/pythonml/Dockerfile-pythonml.txt docker@pythonmlx:/home/docker/container/Dockerfile
-scp /c/Users/user_hhds7y1/docker_setup/pythonml/id_rsa_docker docker@pythonmlx:/home/docker/container
+scp /c/Users/<user name>/docker_setup/pythonml/pythonml.env docker@pythonmlx:/home/docker/container
+scp /c/Users/<user name>/docker_setup/pythonml/Dockerfile-pythonml.txt docker@pythonmlx:/home/docker/container/Dockerfile
+scp /c/Users/<user name>/docker_setup/pythonml/id_rsa_docker docker@pythonmlx:/home/docker/container
 
-scp /c/Users/user_hhds7y1/docker_setup/anaconda/anaconda.env docker@anacondax:/home/docker/container
-scp /c/Users/user_hhds7y1/docker_setup/anaconda/Dockerfile-anaconda.txt docker@anacondax:/home/docker/container/Dockerfile
-scp /c/Users/user_hhds7y1/docker_setup/anaconda/id_rsa_docker docker@anacondax:/home/docker/container
+scp /c/Users/<user name>/docker_setup/anaconda/anaconda.env docker@anacondax:/home/docker/container
+scp /c/Users/<user name>/docker_setup/anaconda/Dockerfile-anaconda.txt docker@anacondax:/home/docker/container/Dockerfile
+scp /c/Users/<user name>/docker_setup/anaconda/id_rsa_docker docker@anacondax:/home/docker/container
 
-scp /c/Users/user_hhds7y1/docker_setup/webscrape/webscrape.env docker@webscrapex:/home/docker/container
-scp /c/Users/user_hhds7y1/docker_setup/webscrape/Dockerfile-webscrape.txt docker@webscrapex:/home/docker/container/Dockerfile
-scp /c/Users/user_hhds7y1/docker_setup/webscrape/id_rsa_docker docker@webscrapex:/home/docker/container
+scp /c/Users/<user name>/docker_setup/webscrape/webscrape.env docker@webscrapex:/home/docker/container
+scp /c/Users/<user name>/docker_setup/webscrape/Dockerfile-webscrape.txt docker@webscrapex:/home/docker/container/Dockerfile
+scp /c/Users/<user name>/docker_setup/webscrape/id_rsa_docker docker@webscrapex:/home/docker/container
 
-scp /c/Users/user_hhds7y1/docker_setup/rstudio/.Renviron docker@rstudiox:/home/docker/container
-scp /c/Users/user_hhds7y1/docker_setup/rstudio/Dockerfile-rstudio.txt docker@rstudiox:/home/docker/container/Dockerfile
-scp /c/Users/user_hhds7y1/docker_setup/rstudio/id_rsa_docker docker@rstudiox:/home/docker/container
+scp /c/Users/<user name>/docker_setup/rstudio/.Renviron docker@rstudiox:/home/docker/container
+scp /c/Users/<user name>/docker_setup/rstudio/Dockerfile-rstudio.txt docker@rstudiox:/home/docker/container/Dockerfile
+scp /c/Users/<user name>/docker_setup/rstudio/id_rsa_docker docker@rstudiox:/home/docker/container
 
 ssh -T git@github.com
 
@@ -48,6 +48,12 @@ cat train.zip.{000..020} > train-new.zip
 diff --speed-large-files train.zip train-new.zip
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
 
+jupyter notebook password  # Run server at least once first!
+
+jupyter nbconvert --to html SCRIPT_NAME.ipynb
+
+docker cp <mycontainer>:/home/pythonml/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
+
 
 ##### Quantfin container commands #####
 docker image build -t quantfin/nonroot:v1 .
@@ -55,14 +61,6 @@ docker image build -t quantfin/nonroot:v1 .
 docker container run --rm -it --env-file quantfin.env -p 8080:8080 --name quantfin-server quantfin/nonroot:v1 /bin/bash
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/quantfin
-
-/opt/conda/bin/jupyter notebook password  # Run server at least once first!
-
-/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
-
-docker cp quantfin-server:/home/quantfin/quant-finance-projects/daily-stocks-report/ ./
-
-scp docker@10.0.4.255:/home/docker/daily-stocks-report/*.html ./
 
 
 ##### PythonML container commands #####
@@ -72,11 +70,21 @@ docker container run --rm -it --env-file pythonml.env -p 8080:8080 --name python
 
 jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
 
-jupyter notebook password  # Run server at least once first!
 
-jupyter nbconvert --to html SCRIPT_NAME.ipynb
+##### TensorFlowML container commands #####
+docker image build -t tensorflowml/nonroot:v2 .
 
-docker cp mycontainer:/home/pythonml/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
+docker container run --rm -it --env-file tensorflowml.env -p 8080:8080 --name tensorflowml-server tensorflowml/nonroot:v2 /bin/bash
+
+jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/tensorflowml
+
+
+##### PyTorchML container commands #####
+docker image build -t pytorchml/nonroot:v2 .
+
+docker container run --rm -it --env-file pytorchml.env -p 8080:8080 --name pytorchml-server pytorchml/nonroot:v2 /bin/bash
+
+jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pytorchml
 
 
 ##### Anaconda container commands #####
@@ -86,12 +94,6 @@ docker container run --rm -it --env-file anaconda.env -p 8080:8080 --name anacon
 
 /opt/conda/bin/jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/anaconda
 
-/opt/conda/bin/jupyter notebook password  # Run server at least once first!
-
-/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
-
-docker cp mycontainer:/home/anaconda/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
-
 
 ##### Webscrape container commands #####
 docker image build -t webscrape/nonroot:v1 .
@@ -100,17 +102,11 @@ docker container run --rm -it --env-file webscrape.env -p 8080:8080 --name websc
 
 jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/webscrape
 
-/opt/conda/bin/jupyter nbconvert --to html SCRIPT_NAME.ipynb
-
-docker cp mycontainer:/home/webscrape/<Git-parent-directory>/<project-folder>/<file>.ipynb ./
-
 
 ##### RStudio container commands #####
 docker image build -t rstudio/nonroot:v2 .
 
 docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server rstudio/nonroot:v2
-
-docker cp mycontainer:/home/rstudio/<Git-parent-directory>/<project-folder>/<file>.Rmd ./
 
 
 ##### AWS Ubuntu AMI commands #####
