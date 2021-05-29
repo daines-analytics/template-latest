@@ -1,0 +1,15 @@
+FROM python:3.8-buster
+LABEL com.dainesanalytics.tensorflowml.version=v1.0
+EXPOSE 8080
+RUN python3 -m pip install numpy scipy matplotlib ipython sympy pandas scikit-learn jupyterlab seaborn
+RUN python3 -m pip install python-dotenv boto3
+RUN python3 -m pip install tensorflow tensorflow-addons tensorflow-data-validation tfx
+RUN python3 -m pip install git+https://github.com/keras-team/keras-tuner.git
+RUN python3 -m pip install autokeras
+RUN useradd -m -d /home/tensorflowml -s /bin/bash tensorflowml
+RUN mkdir /home/tensorflowml/.ssh && chown tensorflowml:tensorflowml /home/tensorflowml/.ssh
+COPY --chown=tensorflowml:tensorflowml id_rsa_docker /home/tensorflowml/.ssh/id_rsa
+RUN chmod 700 /home/tensorflowml/.ssh/id_rsa
+USER tensorflowml
+RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+WORKDIR /home/tensorflowml
