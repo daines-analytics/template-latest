@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 48 #####
+##### Docker and Git commands cheatsheet version 49 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
@@ -72,7 +72,7 @@ jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
 
 
 ##### TensorFlowML container commands #####
-docker image build -t tensorflowml/nonroot:v2 .
+docker image build -t tensorflowml/nonroot:v1 .
 
 docker container run --rm -it --env-file tensorflowml.env -p 8080:8080 --name tensorflowml-server tensorflowml/nonroot:v2 /bin/bash
 
@@ -80,7 +80,7 @@ jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/tensorflo
 
 
 ##### PyTorchML container commands #####
-docker image build -t pytorchml/nonroot:v2 .
+docker image build -t pytorchml/nonroot:v1 .
 
 docker container run --rm -it --env-file pytorchml.env -p 8080:8080 --name pytorchml-server pytorchml/nonroot:v2 /bin/bash
 
@@ -119,32 +119,6 @@ $ conda update conda
 $ conda install -c pytorch -c fastai fastai pytorch
 $ cd course-v3/nbs/dl1
 $ jupyter notebook
-
-
-##### Docker CE Installation on CentOS #####
-$ sudo yum update -y
-
-$ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-
-$ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-$ sudo yum install -y docker-ce docker-ce-cli containerd.io
-
-$ sudo systemctl start docker
-
-$ sudo systemctl enable docker
-
-$ docker image ls
-
-$ sudo groupadd docker # Might not be necessary - Check first
-$ sudo usermod -aG docker $USER # Might not be necessary - Check first
-$ docker run hello-world - Check first
-
-
-##### Docker REMOVAL ONLY #####
-$ sudo yum remove docker-ce
-
-$ sudo rm -rf /var/lib/docker
 
 
 ##### AWS EC2 Setup for FastAI #####
