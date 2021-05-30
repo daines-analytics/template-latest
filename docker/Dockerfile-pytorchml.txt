@@ -1,8 +1,10 @@
 FROM python:3.8-buster
 LABEL com.dainesanalytics.pytorchml.version=v1.0
 EXPOSE 8080
-RUN python3 -m pip install numpy scipy matplotlib ipython sympy pandas scikit-learn jupyterlab seaborn
-RUN python3 -m pip install python-dotenv boto3
+RUN python3 -m venv appdev-env
+RUN . appdev-env/bin/activate
+RUN python3 -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn nltk gensim
+RUN python3 -m pip install jupyterlab python-dotenv boto3
 RUN python3 -m pip install torch==1.8.1+cpu torchvision==0.9.1+cpu torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
 RUN useradd -m -d /home/pytorchml -s /bin/bash pytorchml
 RUN mkdir /home/pytorchml/.ssh && chown pytorchml:pytorchml /home/pytorchml/.ssh
