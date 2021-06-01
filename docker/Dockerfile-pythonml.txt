@@ -1,13 +1,19 @@
 FROM python:3.8-buster
-LABEL com.dainesanalytics.pythonml.version=v2.12
+LABEL com.dainesanalytics.pythonml.version=v2.13
 EXPOSE 8080
-RUN python3 -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn nltk gensim
-RUN python3 -m pip install jupyterlab python-dotenv boto3
-RUN python3 -m pip install PyMySQL imbalanced-learn xgboost
-RUN useradd -m -d /home/pythonml -s /bin/bash pythonml
-RUN mkdir /home/pythonml/.ssh && chown pythonml:pythonml /home/pythonml/.ssh
+SHELL ["/bin/bash", "-c"]
+RUN useradd -m -d /home/pythonml -s /bin/bash pythonml && \
+    mkdir /home/pythonml/.ssh && \
+    chown pythonml:pythonml /home/pythonml/.ssh
 COPY --chown=pythonml:pythonml id_rsa_docker /home/pythonml/.ssh/id_rsa
 RUN chmod 700 /home/pythonml/.ssh/id_rsa
 USER pythonml
-RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
+RUN git config --global user.name "David Lowe" && \
+    git config --global user.email david.lowe@dainesanalytics.com
 WORKDIR /home/pythonml
+RUN python -m venv appdev && \
+    source appdev/bin/activate && \
+    python -m pip install --upgrade pip && \
+    python -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn && \
+    python -m pip install jupyterlab nltk gensim python-dotenv boto3 && \
+    python -m pip install PyMySQL imbalanced-learn xgboost
