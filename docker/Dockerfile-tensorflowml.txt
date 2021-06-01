@@ -1,5 +1,5 @@
 FROM python:3.8-buster
-LABEL com.dainesanalytics.tensorflowml.version=v1.1
+LABEL com.dainesanalytics.tensorflowml.version=v1.01
 EXPOSE 8080
 SHELL ["/bin/bash", "-c"]
 RUN useradd -m -d /home/tensorflowml -s /bin/bash tensorflowml && \
