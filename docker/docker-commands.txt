@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 49 #####
+##### Docker and Git commands cheatsheet version 50 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
@@ -68,7 +68,7 @@ docker image build -t pythonml/nonroot:v2 .
 
 docker container run --rm -it --env-file pythonml.env -p 8080:8080 --name pythonml-server pythonml/nonroot:v2 /bin/bash
 
-jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
+source appdev/bin/activate && jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pythonml
 
 
 ##### TensorFlowML container commands #####
@@ -76,7 +76,7 @@ docker image build -t tensorflowml/nonroot:v1 .
 
 docker container run --rm -it --env-file tensorflowml.env -p 8080:8080 --name tensorflowml-server tensorflowml/nonroot:v1 /bin/bash
 
-jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/tensorflowml
+source appdev/bin/activate && jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/tensorflowml
 
 
 ##### PyTorchML container commands #####
@@ -84,7 +84,7 @@ docker image build -t pytorchml/nonroot:v1 .
 
 docker container run --rm -it --env-file pytorchml.env -p 8080:8080 --name pytorchml-server pytorchml/nonroot:v1 /bin/bash
 
-jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pytorchml
+source appdev/bin/activate && jupyter lab --ip=0.0.0.0 --port=8080 --no-browser --notebook-dir=/home/pytorchml
 
 
 ##### Anaconda container commands #####
