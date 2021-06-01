@@ -1,17 +1,20 @@
 FROM python:3.8-buster
-LABEL com.dainesanalytics.tensorflowml.version=v1.0
+LABEL com.dainesanalytics.tensorflowml.version=v1.1
 EXPOSE 8080
-RUN python3 -m venv appdev-env
-RUN . appdev-env/bin/activate
-RUN python3 -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn nltk gensim
-RUN python3 -m pip install jupyterlab python-dotenv boto3
-RUN python3 -m pip install tensorflow tensorflow-addons tensorflow-data-validation apache-beam
-RUN python3 -m pip install git+https://github.com/keras-team/keras-tuner.git
-RUN python3 -m pip install autokeras
-RUN useradd -m -d /home/tensorflowml -s /bin/bash tensorflowml
-RUN mkdir /home/tensorflowml/.ssh && chown tensorflowml:tensorflowml /home/tensorflowml/.ssh
+SHELL ["/bin/bash", "-c"]
+RUN useradd -m -d /home/tensorflowml -s /bin/bash tensorflowml && \
+    mkdir /home/tensorflowml/.ssh && \
+    chown tensorflowml:tensorflowml /home/tensorflowml/.ssh
 COPY --chown=tensorflowml:tensorflowml id_rsa_docker /home/tensorflowml/.ssh/id_rsa
 RUN chmod 700 /home/tensorflowml/.ssh/id_rsa
 USER tensorflowml
 RUN git config --global user.name "David Lowe" && git config --global user.email david.lowe@dainesanalytics.com
 WORKDIR /home/tensorflowml
+RUN python -m venv appdev && \
+    source appdev/bin/activate && \
+    python -m pip install --upgrade pip && \
+    python -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn && \
+    python -m pip install jupyterlab nltk gensim python-dotenv boto3 && \
+    python -m pip install tensorflow tensorflow-addons tensorflow-data-validation apache-beam && \
+    python -m pip install git+https://github.com/keras-team/keras-tuner.git && \
+    python -m pip install autokeras
