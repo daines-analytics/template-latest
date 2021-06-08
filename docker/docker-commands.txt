@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 50 #####
+##### Docker and Git commands cheatsheet version 51 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
@@ -110,6 +110,13 @@ docker container run --rm -e PASSWORD=rserver -p 8787:8787 --name rstudio-server
 
 
 ##### AWS Ubuntu AMI commands #####
+sudo service --status-all
+sudo service apache2 start -OR- sudo systemctl start apache2.service
+sudo service apache2 stop -OR- sudo systemctl stop apache2.service
+sudo service apache2 restart -OR- sudo systemctl restart apache2.service
+sudo service mysql start
+sudo service mysql stop
+sudo service mysql restart
 jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/home/ubuntu
 
 
