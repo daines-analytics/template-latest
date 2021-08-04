@@ -1,9 +1,9 @@
-##### Docker and Git commands cheatsheet version 52 #####
+##### Docker and Git commands cheatsheet version 53 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
 scp -i ~/.ssh/daines-west-keypair.pem <File Path/Name> ubuntu@<instance IP>:/home/ubuntu
-
+ssh -i ~/.ssh/daines-west-keypair.pem -L 3306:localhost:3306 ubuntu@<instance IP>
 
 ##### Container prep commands #####
 $ mkdir container # Off the /home/docker directory
