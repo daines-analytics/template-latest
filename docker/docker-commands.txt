@@ -1,4 +1,4 @@
-##### Docker and Git commands cheatsheet version 53 #####
+##### Docker and Git commands cheatsheet version 54 #####
 
 ##### SSH connection commands in Linux #####
 ssh -i ~/.ssh/daines-west-keypair.pem ubuntu@<instance IP>
@@ -47,6 +47,9 @@ split -b 25M -d -a 3 train.zip train.zip.
 cat train.zip.{000..020} > train-new.zip
 diff --speed-large-files train.zip train-new.zip
 cat train.csv.gz.* > ./train.csv.gz ; gzip -d train.csv.gz
+
+python3 -m venv appenv
+source appenv/bin/activate
 
 jupyter notebook password  # Run server at least once first!
 
