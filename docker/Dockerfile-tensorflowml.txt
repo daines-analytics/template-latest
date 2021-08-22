@@ -1,5 +1,5 @@
 FROM python:3.8-buster
-LABEL com.dainesanalytics.tensorflowml.version=v1.02
+LABEL com.dainesanalytics.tensorflowml.version=v1.03
 EXPOSE 8080
 SHELL ["/bin/bash", "-c"]
 RUN useradd -m -d /home/tensorflowml -s /bin/bash tensorflowml && \
@@ -16,5 +16,4 @@ RUN python -m venv appdev && \
     python -m pip install --upgrade pip && \
     python -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn && \
     python -m pip install jupyterlab nltk gensim python-dotenv boto3 && \
-    python -m pip install tensorflow tensorflow-addons tensorflow-data-validation apache-beam && \
-    python -m pip install autokeras
+    python -m pip install tensorflow tensorflow-addons tensorflow-data-validation apache-beam
