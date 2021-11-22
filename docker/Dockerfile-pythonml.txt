@@ -1,5 +1,5 @@
-FROM python:3.8-buster
-LABEL com.dainesanalytics.pythonml.version=v2.13
+FROM python:3.9-buster
+LABEL com.dainesanalytics.pythonml.version=v2.14
 EXPOSE 8080
 SHELL ["/bin/bash", "-c"]
 RUN useradd -m -d /home/pythonml -s /bin/bash pythonml && \
@@ -16,4 +16,5 @@ RUN python -m venv appdev && \
     python -m pip install --upgrade pip && \
     python -m pip install numpy scipy matplotlib ipython pandas scikit-learn seaborn && \
     python -m pip install jupyterlab nltk gensim python-dotenv boto3 && \
-    python -m pip install PyMySQL imbalanced-learn xgboost
+    python -m pip install PyMySQL imbalanced-learn xgboost && \
+    python -m pip install tensorflow_decision_forests
